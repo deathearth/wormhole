@@ -1,0 +1,16 @@
+﻿#set($layout = "/layout/layout.vm")
+#set($pageTitle = "导出zk")
+
+
+
+<form class="form-horizontal">
+
+    <div class="form-group">
+        #foreach( $vo in $zkList)  
+                $!{vo.createText} </br>
+             #end  
+    </div>
+   
+
+
+</form>

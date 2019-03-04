@@ -1,0 +1,150 @@
+#set($layout = "/layout/layout.vm")
+#set($pageTitle = "接口管理列表")
+#set($pageScript = "pages/gateway/api/list")
+
+<form class="form-inline clearfix" role="group">
+    <input type="hidden" name="status" value='1'>
+    <input type="hidden" name="version" value="1" >
+</form>
+
+<form class="form-inline clearfix" role="search">
+  <div class="form-group">
+  	<label class="control-label" style="width:100px;text-align:right;">API Id:</label>
+    <input type="text" class="form-control" style="width:200px;" name="id" placeholder="请输入apiId" value = "" maxlength="50">
+    <label class="control-label" style="width:100px;text-align:right;">API名称:</label>
+    <input type="text" class="form-control" style="width:200px;" name="name" placeholder="请输入apiName" value = "" maxlength="128">
+    <br><div style="height:3px;"> </div><label class="control-label" style="width:100px;text-align:right;">dubbo路径名:</label>
+    <input type="text" class="form-control" style="width:200px;" name="serviceName" placeholder="请输入serviceName" value = "" maxlength="128">
+    <label class="control-label" style="width:100px;text-align:right;">dubbo方法名:</label>
+    <input type="text" class="form-control" style="width:200px;" name="serviceMethod" placeholder="请输入dubboMethod" value = "" maxlength="128">
+    <label class="control-label" style="width:100px;text-align:right;">请选择分组:</label>
+        <select id="groupId" name="groupId" class="form-control"  role="select" style="width:100px;height:33px;"></select>
+    <input type="hidden" name="status" value='1'>
+    <br><div style="height:8px;"> </div>
+    
+    <label class="control-label" style="width:100px;text-align:right;">
+    <a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="<div style='width:200px;text-align:left;'>
+        标签分为三级,可联动选择
+        </div>"><span class="glyphicon glyphicon-question-sign"></span></a>
+    标签分类 一:</label>
+	<select id="rootId" name="rootId" class="form-control" role="rootId" style="width:150px;height:33px;">
+		<option value="" selected>全部</option>
+	</select>
+		 <script id="selectOneTmpl" type="text/template">
+		 	<option value="">全部</option>
+			<% _.forEach(list, function(row,index) { %>
+			 <option value=<%= row.id%>><%= row.name%></option>
+			<% }) %>
+		</script>
+    <label class="control-label" style="text-align:right;">二:</label>
+		<select id="branchId" name="branchId" class="form-control" role="branchId" style="width:150px;height:33px;">
+			<option value="" selected>全部</option>
+		</select>
+    <label class="control-label" style="text-align:right;">三:</label>
+		<select id="leafId" name="leafId" class="form-control" role="leafId" style="width:156px;height:33px;">
+			<option value="" selected>全部</option>
+		</select>
+	
+	<label class="control-label" style="width:100px;text-align:right;">标签名称:</label>
+    <input type="text" class="form-control" style="width:200px;" id="markName" name="markName" placeholder="请输入标签名称" value = "" maxlength="50">
+  </div>
+ <script id="selectTmpl" type="text/template">
+ <option value=''>全部</option>
+<% _.forEach(list, function(row,index) { %>
+ <option value=<%= row.id%>><%= row.name%></option>
+<% }) %>
+</script>
+
+  <div class="form-group pull-right">
+    <button class="btn btn-success" type="submit">查询</button>
+    <button class="btn btn-default" type="button" role="add">新增API接口</button>
+  </div>
+
+</form>
+<hr>
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>序号</th>
+      <th>分组</th>
+      <th>API名称</th>
+      <th>接口描述</th>
+      <th>状态</th>
+      <th><a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="<div style='width:200px;text-align:left;'>
+        根据业务及请求参数的类型不同将接口分为三种方式：<br>
+        1.普通接口,适用于大部分场景<br>
+        2.流式接口,隐藏保留,兼容历史数据<br>
+        3.键值接口,隐藏,无应用场景<br>
+        4.回调接口,适用所有回调业务
+        </div>"><span class="glyphicon glyphicon-question-sign"></span></a>接口类型</th> 
+      <th>版本</th>
+      <th>鉴权</th>
+      <th>登录</th>
+      <!-- <th title='鉴权协议版本'>协议版本</th>
+      <th>接口全路径</th>
+      <th>方法名称</th>
+      <th>服务版本号</th>
+      <th>超时时间</th>
+      <th>创建者</th>
+      <th>修改者</th> 
+      <th>创建时间</th>
+      <th>修改时间</th>
+      <th>版本号</th>
+      -->
+      <th>操作
+      <a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="
+      <div style='text-align:left;'>编辑:完善接口的响应\参数信息等</div>
+      <div style='text-align:left;'>详情:client可查看详情进行调试</div>
+      <div style='text-align:left;'>测试:develop测试鉴权\登录等逻辑</div>
+      <div style='text-align:left;'>同步:daily版本且测试环境可同步</div>
+      <div style='text-align:left;'>复制:创建接口的副本进行测试</div>
+      <div style='text-align:left;color:red;'>只能从daily复制到dev,不影响测试</div>
+      <div style='text-align:left;'>删除:删除当前接口(逻辑删除)</div>
+      ">
+      <span class="glyphicon glyphicon-question-sign"></span></a>
+      </th>
+    </tr>
+  </thead>
+  <tbody role="list">
+  </tbody>
+</table>
+<div class="clearfix">
+  <nav class="page-box pull-right"></nav>
+</div>
+
+<script id="listTmpl" type="text/template">
+<% _.forEach(list, function(row,index) { %>
+  <tr>
+      <td><%= index +　1  + offset %></td>
+      <td><%= row.groupName%></td>
+      <td><%= row.name%></td>
+      <td title="<%= row.description%>"><%= row.description.length>20?row.description.substring(0,20)+"...":row.description   %></td>
+      <td><%= row.status==1?"正常":"删除"%></td>
+      <td><%= row.special==0?"普通":row.special==1?"流式":row.special==3?"回调":"其他" %>-<%= row.httpMethod==1?"GET":"POST"%></td>
+      <td><%= row.serviceVersion%></td>
+      <td><%= row.isAuth==1?"是":"否"%></td>
+      <td><%= row.isLogin==1?"是":"否"%></td>
+      <!-- <td><%= row.authVersion%></td> -->
+      <!-- <td><%= row.serviceName%></td>
+      <td><%= row.serviceMethod%></td>
+      <td><%= row.serviceVersion%></td>
+      <td><%= row.timeOut%></td>
+      <td><%= row.createBy%></td>
+      <td><%= row.updateBy%></td>
+      <td><%= row.cdt%></td>
+      <td><%= row.udt%></td>
+      <td><%= row.version%></td>
+      -->
+      <td>
+          <a href="javascript:" data-id="<%= row.id %>" role="delete">删除</a>
+          <a href="javascript:" data-id="<%= row.id %>" role="detail">详情</a>
+	      <a href="javascript:" data-id="<%= row.id %>" role="edit">编辑</a>
+	      <a href="javascript:" data-id="<%= row.id %>" role="test">测试</a>
+		  <% if(row.serviceVersion.indexOf("online") <= 0){ %>	      
+		      <a href="javascript:" data-id="<%= row.id %>" role="copy">复制</a>
+		      <a href="javascript:" data-id="<%= row.id %>" role="transfer">同步到线上</a>
+	      <% } %>
+      </td>
+  </tr>
+<% }) %>
+</script>

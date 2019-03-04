@@ -1,0 +1,13 @@
+#set($layout = "/layout/framework.vm")
+
+<div class="content-wrapper">
+  <input id="watermarkname" type="hidden" value="$!{name}">
+  <div id="arrow-left" class="tab-arrow left"><i class="fa fa-chevron-left"></i></div>
+  <div id="arrow-right" class="tab-arrow right"><i class="fa fa-chevron-right"></i></div>
+  <div class="tab-box">
+    <ul id="tab-navs" class="nav nav-tabs">
+    </ul>
+  </div>
+  <div id="tab-contents" class="tab-contents">
+  </div>
+</div>

@@ -1,0 +1,34 @@
+﻿#set($layout = "/layout/layout.vm")
+#set($pageTitle = "用户管理-新增用户")
+#set($pageScript = "pages/auth/user/add")
+
+
+<form class="form-horizontal">
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">用户名</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="name" placeholder="" value="">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">密码</label>
+        <div class="col-sm-6">
+            <input type="password" class="form-control" name="password" placeholder="" value="">
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">姓名</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="fullName" placeholder="" value="">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-6 col-sm-offset-3">
+            <button type="button" class="btn btn-default" role="cancel">取消</button>
+            <button type="submit" class="btn btn-primary">提交</button>
+        </div>
+    </div>
+</form>

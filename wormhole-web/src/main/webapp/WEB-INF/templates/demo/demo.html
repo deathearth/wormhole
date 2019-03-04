@@ -1,0 +1,364 @@
+#set($layout = "/layout/layout.vm") 
+#set($pageTitle = "demo页面") 
+
+<hr>
+<div class="panel panel-default">
+  <div class="panel-heading">查询表单</div>
+  <div class="panel-body">
+  <form class="form-inline clearfix" role="search">
+    <div class="form-group">
+      <label class="control-label">输入框</label>
+      <input type="text" class="form-control" name="control1" placeholder="这个字段是空白时的提示文字" value="">
+    </div>
+    <div class="form-group">
+      <label class="control-label">数字输入框</label>
+      <input type="number" class="form-control" name="control2">
+    </div>
+    <div class="form-group">
+      <label class="control-label">时间控件</label>
+      <input type="text" class="form-control input-mask-date-time" onFocus="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd'})" name="beginDate"/>
+      <span>-</span>
+      <input type="text" class="form-control input-mask-date-time" onFocus="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd'})" name="endDate"/>
+    </div>
+    <div class="form-group">
+      <label class="control-label">下拉框</label>
+      <select class="form-control" name="control3">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="control-label">多选框</label>
+      <label class="checkbox-inline"><input type="checkbox" name="check1" value="1" checked>1号</label>
+      <label class="checkbox-inline"><input type="checkbox" name="check1" value="2">2号</label>
+      <label class="checkbox-inline"><input type="checkbox" name="check1" value="3">3号</label>
+    </div>
+    <div class="form-group">
+      <label class="control-label">单选框</label>
+      <label class="radio-inline"><input type="radio" name="radio1" value="1" checked>1号</label>
+      <label class="radio-inline"><input type="radio" name="radio1" value="2">2号</label>
+      <label class="radio-inline"><input type="radio" name="radio1" value="3">3号</label>
+    </div>
+    <div class="form-group pull-right">
+      <button class="btn btn-success" type="submit"><i class="fa fa-search"></i>查询</button>
+      <button class="btn btn-default" type="button" role="add"><i class="fa fa-plus"></i>新增</button>
+    </div>
+  </form>
+  </div>
+</div>
+
+<hr>
+<div class="panel panel-default">
+  <div class="panel-heading">页面表单</div>
+  <div class="panel-body">
+    <form class="form-horizontal">
+      <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">输入框</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="name" placeholder="">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">时间控件</label>
+        <div class="col-sm-3 dash-after">
+          <input type="text" class="form-control input-mask-date-time"
+            onFocus="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm:ss'})" name="beginDate"/>
+        </div>
+        <div class="col-sm-3">
+          <input type="text" class="form-control input-mask-date-time"
+            onFocus="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm:ss'})" name="endDate"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">下拉框</label>
+        <div class="col-sm-6">
+          <select class="form-control" name="control3">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">多选框</label>
+        <div class="col-sm-6">
+          <label class="checkbox-inline"><input type="checkbox" name="check1" value="1" checked>1号</label>
+          <label class="checkbox-inline"><input type="checkbox" name="check1" value="2">2号</label>
+          <label class="checkbox-inline"><input type="checkbox" name="check1" value="3">3号</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">单选框</label>
+        <div class="col-sm-6">
+          <label class="radio-inline"><input type="radio" name="radio1" value="1" checked>1号</label>
+          <label class="radio-inline"><input type="radio" name="radio1" value="2">2号</label>
+          <label class="radio-inline"><input type="radio" name="radio1" value="3">3号</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">多行输入框</label>
+        <div class="col-sm-6">
+          ## style中height控制高度，resize:none设置大小是否可以被拖拽
+          <textarea class="form-control" name="control4" placeholder="没有内容时的提示文字" style="height:150px;resize:none;"></textarea>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">静态内容</label>
+        <div class="col-sm-6">
+          <p class="form-control-static">这是静态内容</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">图片上传控件</label>
+        <div class="col-sm-6">
+          <label class="img-box" role="imgbox">
+            <input type="file" class="hidden" name="imgFile" accept="image/*">
+            <div class="thumbnail"><img src=""></div>
+          </label>
+        </div>
+        <div class="col-sm-offset-3 col-sm-6">
+          <p class="form-control-static">图片上传由于实现了预览，需要html5支持，使用时取input:file组件的值即可</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">文件上传控件</label>
+        <div class="col-sm-6">
+          <label class="input-group" role="filebox">
+            <input type="file" class="hidden" name="file">
+            <div class="input-group-addon">选择文件</div>
+            <div class="form-control file-text">xxxx</div>
+          </label>
+        </div>
+        <div class="col-sm-offset-3 col-sm-6">
+          <p class="form-control-static">同图片上传控件,使用时取input:file组件的值即可</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">联动选择</label>
+        <div class="col-sm-2">
+          <select class="form-control" name="xxx" id="xxx">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+        </div>
+        <label class="col-sm-2 control-label">子选择项</label>
+        <div class="col-sm-2">
+          <select class="form-control" name="yyy" id="yyy">
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-6 col-sm-offset-3">
+          <pre>
+          // 联动控件需要配合js
+          define(['jquery', 'components/link-select'], function ($) {
+            $('#yyy').linkSelect({
+              link: '#xxx',     // 联动的父控件
+              resource: 'xxx/xxxx',  // 联动资源,可以为url，object-map或返回数据的function
+              emptyItem: true,      // 是否添加空项，设为true时默认显示全部，也可设为要显示的字符串
+              param: 'id',      // 发请求时的参数名
+              text: 'name',     // 返回数据中作为显示的字段
+              value: 'id'       // 返回数据中作为值的字段
+            })
+          })
+          </pre>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">自动完成</label>
+        <div class="col-sm-6">
+          <input id="autocomplete" type="text" class="form-control" name="autocomplete" placeholder="">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-6 col-sm-offset-3">
+          <button type="button" class="btn btn-default" role="closetab"><i class="fa fa-close"></i>取消</button>
+          <button type="submit" class="btn btn-primary"><i class="fa fa-check"></i>提交</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<hr>
+<div class="panel panel-default">
+  <div class="panel-heading">表格</div>
+  <div class="panel-body">
+    ## table-bordered 显示边框
+    ## table-striped 奇偶行背景色分隔
+    ## table-hover 鼠标悬停变色
+    <table class="table table-bordered table-striped table-hover">
+      <thead>
+        <tr>
+          <th>字段</th>
+          ## 在列头上添加宽度设置整列宽度
+          <th style="width:60px;">60px</th>
+          <th>字段2</th>
+          <th>字段3</th>
+          <th>字段4</th>
+          <th>字段5</th>
+        </tr>
+      </thead>
+      <tbody role="list">
+        <tr>
+          <td>111</td>
+          <td>111</td>
+          <td>111</td>
+          <td>111</td>
+          <td>111</td>
+          <td>111</td>
+        </tr>
+        <tr>
+          <td>111</td>
+          <td>111</td>
+          <td>111</td>
+          <td>111</td>
+          <td>111</td>
+          <td>111</td>
+        </tr>
+        <tr>
+          <td>111</td>
+          <td>111</td>
+          <td>111</td>
+          <td>111</td>
+          <td>111</td>
+          <td>111</td>
+        </tr>
+        ## 在tr上添加class控制整行背景色
+        <tr class="success">
+          <td>本行</td>
+          <td>是</td>
+          <td>绿色</td>
+          <td>背景</td>
+          <td>111</td>
+          <td>111</td>
+        </tr>
+        ## 在td上添加class控制单元格背景色
+        <tr>
+          <td>111</td>
+          <td>111</td>
+          <td>111</td>
+          <td>111</td>
+          <td class="danger">禁用</td>
+          <td>111</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<hr>
+<div class="panel panel-default">
+  <div class="panel-heading">js模版渲染</div>
+  <div class="panel-body">
+    <div id="jsTmplDemo"></div>
+  </div>
+</div>
+
+## js模版
+<script type="text/template" id="demoTmpl">
+## 分支
+<% if (status == 1)  { %>
+  <span>通过</span>
+<% } else { %>
+  <span>未通过</span>
+<% } %>
+<br>
+## 循环
+<% for (var i = 0; i < 10; i++) { %>
+  <span>编号<%- i%></span>
+<% } %>
+<br>
+## 迭代
+<table class="table table-bordered"><tbaody>
+<% _.each(list, function (item, index) { %>
+  <tr>
+    <td><%- i%></td>
+    <td><%- item.name%></td>
+    <td><%- item.mobile%></td>
+  </tr>
+<% }) %>
+<tbaody></table>
+<br>
+<span>数据输出</span>
+<%-title%>
+<br>
+## 使用上面的数据输出会对html标签进行编码以避免XSS攻击
+## 大部分时候建议使用这种方式输出,只在确认输出html时使用不编码方式
+<span>编码</span>
+<%-markup%>
+<br>
+<span>不编码</span>
+<%=markup%>
+</script>
+
+## js模版的使用
+<script>
+define('tmplDemo', ['jquery', 'lodash'], function ($, _) {
+  console.log(121212)
+  var tmpl = $('#demoTmpl').html()  // 获取模版内容字符串
+  var render = _.template(tmpl)     // 将模版编译为模版渲染器
+  var markup = render({             // 将数据渲染为html字符串
+    status: 1,
+    list: [
+      { name: '张三', mobile: '13333333333' }, 
+      { name: '李四', mobile: '14444444444' }
+    ],
+    title: '测试',
+    markup: '<a href="http://www.baidu.com" target="_blank">注入链接</a>'
+  })
+  $('#jsTmplDemo').html(markup)
+})
+require(['tmplDemo'])
+</script>
+
+## 联动选择的代码
+<script>
+define('linkDemo', ['jquery', 'components/link-select'], function ($, _) {
+  $('#yyy').linkSelect({
+    link: '#xxx',     // 联动的父控件
+    // resource: 'xxx/xxxx',  // 使用地址请求
+    // resource: function (parentVal) { // 使用function,返回一个符合定义的数组
+    //   return [
+    //     { id: 'xxx' + parentVal, name: 'xxx' + parentVal },
+    //     { id: 'yyy' + parentVal, name: 'yyy' + parentVal },
+    //   ] 
+    // },
+    resource: function (parentVal) { // 使用function,返回一个延迟对象
+      var dtd = $.Deferred()
+      setTimeout(function () {
+        dtd.resolve([
+          { id: 'qqq' + parentVal, name: 'qqq' + parentVal },
+          { id: 'www' + parentVal, name: 'www' + parentVal },
+        ])
+      }, 2000)
+      return dtd
+    },
+    // resource: { // 直接使用一个object对象作为map
+    //   '1': [{ id: 'a', name: 'a' }], 
+    //   '2': [{ id: 'b', name: 'b' }],  
+    //   '3': [{ id: 'c', name: 'c' }]
+    // },
+    emptyItem: true,
+    param: 'id',      // 发请求时的参数名
+    text: 'name',     // 返回数据中作为显示的字段
+    value: 'id'       // 返回数据中作为值的字段
+  })
+})
+require(['linkDemo'])
+</script>
+
+## 自动完成的代码实现
+<script>
+define('autoCompleteDemo', ['jquery', 'components/auto-complete'], function ($, _) {
+  $('#autocomplete').autoComplete({
+    url: '/mock/ac.json'
+    // 请求的参数名为value，内容是当前文本框内用户输入的值
+    // 返回为{ "status": "ok", data: ["1111", "1112"] }
+    // 列表上显示的即为data数组内的值
+  })
+})
+require(['autoCompleteDemo'])
+</script>

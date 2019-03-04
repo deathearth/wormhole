@@ -1,0 +1,13 @@
+﻿#set($layout = "/layout/layout.vm")
+#set($pageTitle = "角色权限分配")
+#set($pageScript = "pages/auth/role/assign")
+
+<h3>资源分配</h3>
+<hr>
+<div class="panel panel-default">
+    <div class="panel-heading">资源权限树</div>
+    <div class="panel-body">
+        <ul id="tree" class="ztree"></ul>
+    </div>
+    <button type="button" class="btn btn-success" role="submit"><i class="fa fa-check"></i>提交</button>
+</div>

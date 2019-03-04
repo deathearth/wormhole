@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="shiroFilter"
+		class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager" />
+		<property name="loginUrl" value="/auth/authc" />
+		<property name="successUrl" value="/home" />
+		<property name="unauthorizedUrl" value="/auth/401" />
+		<property name="filters">
+			<map>
+				<entry key="perm" value-ref="urlPermFilter" />
+			</map>
+		</property>
+
+		<property name="filterChainDefinitions">
+			<value>
+                 <![CDATA[
+                    /** = anon
+                ]]>
+			</value>
+		</property>
+	</bean>
+
+	<!-- 用户url访问权限 过滤器 -->
+	<bean id="urlPermFilter"
+		class="com.kaistart.auth.interceptor.UrlPermFilter" />
+
+	<!-- 用户会话管理 -->
+	<bean id="securityManager"
+		class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realm" ref="authRealm" />
+	</bean>
+
+	<!-- 用户角色、权限验证 -->
+	<bean id="authRealm"
+		class="com.kaistart.auth.interceptor.AuthRealm" />
+		
+	<!-- 上面类用到的，密码验证对象 -->
+	<bean id="passwordService"
+		class="org.apache.shiro.authc.credential.DefaultPasswordService" />
+
+</beans>

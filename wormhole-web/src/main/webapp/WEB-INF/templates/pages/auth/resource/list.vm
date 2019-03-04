@@ -1,0 +1,67 @@
+﻿#set($layout = "/layout/layout.vm")
+#set($pageTitle = "资源管理")
+#set($pageScript = "pages/auth/resource/list")
+
+<h3>资源管理</h3>
+<form class="form-inline clearfix" role="search">
+	<!--
+    <div class="form-group">
+        <label class="control-label">名称</label>
+        <input type="text" class="form-control" style="width:150px;" name="name" placeholder="" value = "">
+    </div>
+    -->
+    <div class="form-group pull-right">
+        <!-- <button class="btn btn-success" type="submit">查询</button> -->
+        <button class="btn btn-default" type="button" role="add">新增</button>
+    </div>
+
+</form>
+<hr>
+
+<div class="panel-body">
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>名称</th>
+            <th style="width:120px;">类型</th>
+            <th style="width:60px;">排序</th>
+            <th style="width:280px;">操作</th>
+        </tr>
+        </thead>
+        <tbody role="tabletree" class="tabletree">
+        </tbody>
+    </table>
+</div>
+<script type="text/template" id="tableTreeTmpl">
+    <% _.each(nodes, function (node) { %>
+    <tr class="<%=level > 0 ? 'child level' + level : ''%>" pid="<%=pid%>"
+    <%= parentExpand ? 'style="display:table-row;"' : '' %>>
+    <td>
+        <% if (node.category !== 'a' && node.children.length > 0) { %>
+        <span data-id="<%= node.id %>" class="trigger <%= node.expand ? 'expand' : '' %>">
+					<i class="fa fa-fw fa-caret-right"></i>
+				</span>
+        <% } else { %>
+        <span><i class="fa fa-fw"></i></span>
+        <% } %>
+        <span><%- node.name %></span>
+    </td>
+    <td>
+        <% if(node.category === 'd') { %>目录权限<% } %>
+        <% if(node.category === 'm') { %>菜单权限<% } %>
+        <% if(node.category === 'a') { %>操作权限<% } %>
+    </td>
+    <td><%- node.seq %></td>
+    <td>
+        <a class="btn btn-danger btn-xs" data-id="<%= node.id %>" role="delete"><i class="fa fa-trash"></i>删除</a>
+        <a class="btn btn-default btn-xs" data-id="<%= node.id %>" role="edit"><i class="fa fa-pencil"></i>编辑</a>
+        <% if (node.category !== 'a') { %>
+        <a class="btn btn-primary btn-xs" data-id="<%= node.id %>" role="add_sub"><i class="fa fa-plus"></i>添加子节点</a>
+        <% } %>
+    </td>
+    </tr>
+    <% if (node.category !== 'a' && node.children.length > 0) { %>
+    <%= call(node.children, node.id, level + 1, node.expand) %>
+    <% } %>
+    <% }) %>
+</script>

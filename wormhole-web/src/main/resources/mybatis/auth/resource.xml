@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kaistart.auth.mapper.ResourceMapper">
+
+    <resultMap id="result" type="com.kaistart.auth.domain.Resource">
+        <id column="id" property="id"/>
+        <result column="pid" property="pid"/>
+        <result column="name" property="name"/>
+        <result column="category" property="category"/>
+        <result column="seq" property="seq"/>
+        <result column="uri" property="uri"/>
+        <result column="cdt" property="cdt"/>
+        <result column="udt" property="udt"/>
+    </resultMap>
+
+    <sql id="where">
+        <where>
+            <if test="id != null">id = #{id}</if>
+            <if test="pid != null">pid = #{pid}</if>
+            <if test="name != null and name != ''">name = #{name}</if>
+            <if test="category != null and category != ''">category = #{category}</if>
+            <if test="seq != null">seq = #{seq}</if>
+            <if test="uri != null">uri = #{uri}</if>
+        </where>
+    </sql>
+
+    <select id="selectById" parameterType="Integer" resultMap="result">
+        SELECT * FROM auth_resource WHERE id = #{id}
+    </select>
+
+    <select id="selectCount" parameterType="Map" resultType="Integer">
+        SELECT count(*) FROM auth_resource
+        <include refid="where"/>
+    </select>
+
+    <select id="selectList" parameterType="Map" resultMap="result">
+        SELECT * FROM auth_resource
+
+        <where>
+            <if test="id != null">id = #{id}</if>
+            <if test="pid != null">pid = #{pid}</if>
+            <if test="name != null and name != ''">name = #{name}</if>
+            <if test="category != null and category != ''">category = #{category}</if>
+            <if test="seq != null">seq = #{seq}</if>
+            <if test="uri != null">uri = #{uri}</if>
+            <if test="resourceIds != null">
+                id in
+                <foreach collection="resourceIds" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+
+        ORDER BY seq
+
+        <if test="size != null or skip != null">
+            LIMIT #{skip}, #{size}
+        </if>
+    </select>
+
+    <update id="update" parameterType="com.kaistart.auth.domain.Resource">
+        UPDATE auth_resource
+
+        <set>
+            <if test="id != null">
+                id = #{id},
+            </if>
+            <if test="pid != null">
+                pid = #{pid},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="category != null">
+                category = #{category},
+            </if>
+            <if test="seq != null">
+                seq = #{seq},
+            </if>
+            <if test="uri != null">
+                uri = #{uri},
+            </if>
+            udt = now()
+        </set>
+
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        DELETE FROM auth_resource WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteChildrenByPID" parameterType="Integer">
+        DELETE FROM auth_resource where pid = #{id}
+    </delete>
+
+    <delete id="deleteList" parameterType="List">
+        DELETE FROM auth_resource
+        <where>
+            <if test="ids != null">
+                id in
+                <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </delete>
+
+    <insert id="insert" parameterType="com.kaistart.auth.domain.Resource">
+        INSERT INTO auth_resource (pid, name, category, seq, uri, cdt, udt) VALUES (#{pid}, #{name}, #{category}, #{seq}, #{uri}, now(), now())
+    </insert>
+
+</mapper>

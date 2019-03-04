@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>WormHole服务网关管理平台</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="$!{basePath}/velocity/image/favicon.ico" rel="shortcut icon"  type="image/x-icon" />
+  <link href="$!{basePath}/velocity/lib/normalize/normalize.css" rel="stylesheet">
+  <link href="$!{basePath}/velocity/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="$!{basePath}/velocity/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <link href="$!{basePath}/velocity/style/common.css" rel="stylesheet">
+</head>
+
+<body>
+  <header class="topbar">
+    <a id="menu-button" href="javascript:">
+      <i class="fa fa-fw fa-bars"></i>
+    </a>
+    <div class="topbar-logo"></div>
+    <div id="user-display">
+      <span class="username"></span>
+      <div class="dropdown usermenu-dropdown">
+        <a class="usermenu-button dropdown-toggle" data-toggle="dropdown">
+          <i class="fa fa-fw fa-user-circle"></i>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-right">
+          <li>
+            <a href="/auth/logout">
+              <i class="fa fa-fw fa-power-off"></i>
+              <span class="topbar-item-name">退出登录</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout-main menu-expanded">
+    <div class="layout-menu-wrapper">
+      <div class="layout-menu-container">
+        <ul class="layout-menu">
+
+        </ul>
+      </div>
+    </div>
+    <div class="layout-content">
+      $!screen_content
+    </div>
+  </div>
+
+  <script src="$!{basePath}/velocity/lib/lodash/lodash.min.js"></script>
+  <script src="$!{basePath}/velocity/lib/jquery/jquery.min.js"></script>
+  <script src="$!{basePath}/velocity/lib/bootstrap/js/bootstrap.min.js"></script>
+  <script src="$!{basePath}/velocity/js/tab-manager.js"></script>
+  <script src="$!{basePath}/velocity/js/framework.js"></script>
+</body>
+
+</html>

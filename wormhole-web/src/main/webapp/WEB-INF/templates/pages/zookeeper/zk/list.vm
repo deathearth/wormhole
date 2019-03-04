@@ -1,0 +1,77 @@
+﻿#set($layout = "/layout/layout.vm")
+#set($pageTitle = "ZK管理")
+#set($pageScript = "pages/zookeeper/zk/list")
+<form class="form-inline clearfix" role="search">
+	
+    <div class="form-group">
+        <!-- <label class="control-label">ip:端口</label>
+      
+         <select class="form-control" name="ipport" id="ipport" style="width:250px;">
+      	 	<option value="127.0.0.1:2181" selected="selected">127.0.0.1:2181</option>
+			<option value="121.40.51.44:2181">121.40.51.44:2181(测试1)</option>
+			<option value="10.171.225.183:2181">10.171.225.183:2181（生产）</option>
+			<option value="118.31.237.143:2181">118.31.237.143:2181（测试2）</option>
+      	</select> -->
+      	
+      	 <label class="control-label">ip:端口</label>
+        <input type="text" class="form-control" style="width:350px;" name="ipport" id="ipport" placeholder="" value = "127.0.0.1:2181">
+      	
+      	
+        <label class="control-label">根</label>
+        <input type="text" class="form-control" style="width:350px;" name="root" id="root" placeholder="" value = "/kaistart/1.0.0">
+    </div>
+    
+    <div class="form-group pull-right">
+        <button class="btn btn-success" type="submit">查询</button>
+        <button class="btn btn-default" type="button" role="add">新增</button>
+        <button class="btn btn-default" type="button" role="report">导出</button>
+        <button class="btn btn-default" type="button" role="reportdelete">导出delete</button>
+        <button class="btn btn-default" type="button" role="batch">导入</button>
+    </div>
+
+</form>
+<hr>
+
+<div class="panel-body">
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>名称</th>
+            <th style="width:680px;">值</th>
+            <th style="width:280px;">操作</th>
+        </tr>
+        </thead>
+        <tbody role="tabletree" class="tabletree">
+        </tbody>
+    </table>
+</div>
+<script type="text/template" id="tableTreeTmpl">
+    <% _.each(nodes, function (node) { %>
+    <tr class="<%=level > 0 ? 'child level' + level : ''%>" pid="<%=pid%>"
+    <%= parentExpand ? 'style="display:table-row;"' : '' %>>
+    <td>
+        <% if (node.category !== 'a' && node.children.length > 0) { %>
+        <span data-id="<%= node.id %>" class="trigger <%= node.expand ? 'expand' : '' %>">
+					<i class="fa fa-fw fa-caret-right"></i>
+				</span>
+        <% } else { %>
+        <span><i class="fa fa-fw"></i></span>
+        <% } %>
+        <span><%- node.name %></span>
+    </td>
+    <td>
+        <span><%- node.value %></span>
+    </td>
+   
+    <td>
+        <a class="btn btn-danger btn-xs" data-id="<%= node.path %>" role="delete"><i class="fa fa-trash"></i>删除</a>
+        <a class="btn btn-default btn-xs" data-id="<%= node.path %>" role="edit"><i class="fa fa-pencil"></i>编辑</a>
+        <a class="btn btn-primary btn-xs" data-id="<%= node.path %>" role="add_sub"><i class="fa fa-plus"></i>添加子节点</a>
+       
+    </td>
+    </tr>
+    <% if (node.category !== 'a' && node.children.length > 0) { %>
+    <%= call(node.children, node.id, level + 1, node.expand) %>
+    <% } %>
+    <% }) %>
+</script>

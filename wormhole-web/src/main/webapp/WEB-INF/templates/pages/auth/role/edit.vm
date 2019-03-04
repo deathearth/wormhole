@@ -1,0 +1,27 @@
+﻿#set($layout = "/layout/layout.vm")
+#set($pageTitle = "角色管理-更新角色")
+#set($pageScript = "pages/auth/role/edit")
+
+
+<form class="form-horizontal">
+    <input type="hidden" name="id" placeholder="" value="$!{role.id}">
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">角色名</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="name" placeholder="" value="$!{role.name}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">组</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="group" placeholder="" value="$!{role.group}">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-6 col-sm-offset-3">
+            <button type="button" class="btn btn-default" role="cancel">取消</button>
+            <button type="submit" class="btn btn-primary">提交</button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,71 @@
+#set($version = "44")
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  #if ($pageTitle)
+  <title>$!{pageTitle}</title>
+  #else
+  <title>reiz后台系统</title>
+  #end
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link href="/velocity/lib/normalize/normalize.css?version=$!{version}" rel="stylesheet">
+  <link href="/velocity/lib/bootstrap/css/bootstrap.min.css?version=$!{version}" rel="stylesheet">
+  <link href="/velocity/lib/font-awesome/css/font-awesome.min.css?version=$!{version}" rel="stylesheet">
+  <link href="/velocity/lib/ztree/css/zTreeStyle/zTreeStyle.css?version=$!{version}" rel="stylesheet">
+  <link href="/velocity/style/page-common.css?version=$!{version}" rel="stylesheet">
+  <script src="/velocity/lib/my97DatePicker/WdatePicker.js"></script>
+  <!-- 引入样式 -->
+  <link href="/velocity/lib/element-ui/lib/theme-chalk/index.css" rel="stylesheet">
+  ## 加载requirejs
+  <script src="/velocity/lib/requirejs/require.js"></script>
+  <script>
+  require.config({
+    baseUrl: '/velocity/',
+    urlArgs: 'version=$!{version}',
+    paths: {
+      pages: 'js/pages',
+      utils: 'js/utils',
+      components: 'js/components',
+      config: 'config/config',
+      jquery: 'lib/jquery/jquery.min',
+      lodash: 'lib/lodash/lodash.min',
+      bootstrap: 'lib/bootstrap/js/bootstrap.min',
+      moment: 'lib/moment/moment.min',
+      ztree: 'lib/ztree/js/jquery.ztree.all.min',
+      tabhelper: 'js/tab-helper',
+      urlArgs: "r=" + (new Date()).getTime(),
+      vue : 'lib/vue/dist/vue',
+      'ELEMENT' : 'lib/element-ui/lib/index'
+    }
+  })
+  </script>
+</head>
+
+<body>
+  <div class="container-fluid" style="padding-top:10px;">$!screen_content</div>
+
+  ## 加载公用页面处理
+  <script>
+    require(['js/page'], function(page) {
+      ## 设置标签页标题
+      var title = '$!{pageTitle}'
+      page.init(title)
+
+      ## 加载页面 js
+      #if ($pageScript)
+      require(['$!{pageScript}'], function (module) {
+        if (typeof module === 'function') {
+          module()
+        } else if (module && typeof module.excute === 'function') {
+          module.excute()
+        }
+      })
+      #end
+    })
+  </script>
+</body>
+
+</html>

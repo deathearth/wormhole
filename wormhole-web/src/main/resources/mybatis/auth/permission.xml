@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kaistart.auth.mapper.PermissionMapper">
+
+    <resultMap id="result" type="com.kaistart.auth.domain.Permission">
+        <id column="id" property="id"/>
+        <result column="res_id" property="resId"/>
+        <result column="role_id" property="roleId"/>
+        <result column="cdt" property="cdt"/>
+        <result column="udt" property="udt"/>
+    </resultMap>
+
+    <sql id="where">
+        <where>
+            <if test="id != null">and id = #{id}</if>
+            <if test="resId != null">and res_id = #{resId}</if>
+            <if test="roleId != null">and role_id = #{roleId}</if>
+        </where>
+    </sql>
+
+    <select id="selectById" parameterType="Integer" resultMap="result">
+        SELECT * FROM auth_permission WHERE id = #{id}
+    </select>
+
+    <select id="selectByRoleId" parameterType="Integer" resultMap="result">
+        SELECT * FROM auth_permission WHERE  role_id = #{roleId}
+    </select>
+
+    <select id="selectCount" parameterType="Map" resultType="Integer">
+        SELECT count(*) FROM auth_permission
+        <include refid="where"/>
+    </select>
+
+    <select id="selectList" parameterType="Map" resultMap="result">
+        SELECT * FROM auth_permission
+
+        <where>
+            <if test="id != null">and id = #{id}</if>
+            <if test="resId != null">and res_id = #{resId}</if>
+            <if test="roleId != null">and role_id = #{roleId}</if>
+            <if test="roleIds != null">
+                and role_id in
+                <foreach collection="roleIds" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+
+        ORDER BY id DESC
+
+        <if test="size != null or skip != null">
+            LIMIT #{skip}, #{size}
+        </if>
+    </select>
+
+    <update id="update" parameterType="com.kaistart.auth.domain.Permission">
+        UPDATE auth_permission
+
+        <set>
+            <if test="id != null">
+                id = #{id},
+            </if>
+            <if test="resId != null">
+                res_id = #{resId},
+            </if>
+            <if test="roleId != null">
+                role_id = #{roleId},
+            </if>
+            udt = now()
+        </set>
+
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        DELETE FROM auth_permission WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteByRoleId" parameterType="Integer">
+        DELETE FROM auth_permission WHERE role_id = #{roleId}
+    </delete>
+
+    <insert id="insert" parameterType="com.kaistart.auth.domain.Permission">
+        INSERT INTO auth_permission (res_id, role_id, cdt, udt) VALUES (#{resId}, #{roleId}, now(), now())
+    </insert>
+
+    <insert id="insertList" parameterType="ArrayList">
+        INSERT INTO auth_permission (res_id, role_id, cdt, udt) VALUES
+        <foreach collection="list" item="permission" index="index" separator=",">
+            (#{permission.resId}, #{permission.roleId}, now(), now())
+        </foreach>
+    </insert>
+
+</mapper>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kaistart.gateway.mgr.mapper.GatewayIpsetMapper">
+  <resultMap id="BaseResultMap" type="com.kaistart.gateway.domain.GatewayIpsetDO">
+    <id column="ID" property="id" />
+    <result column="`IP`" property="ip" />
+    <result column="`TYPE`" property="type" />
+    <result column="`DESC`" property="desc" />
+    <result column="CREATE_BY" property="createBy" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="`STATUS`" property="status" />
+    <result column="`CDT`" property="cdt" />
+    <result column="`UDT`" property="udt" />
+
+  </resultMap>
+  
+  <!-- 基本列 -->
+  <sql id="Base_Column_List">
+    `ID`,`IP`,`TYPE`,`DESC`,CREATE_BY,UPDATE_BY,`STATUS`,`CDT`,`UDT`
+  </sql>
+  
+  <sql id="where">
+	<where>
+	<if test="id != null">and `ID` = #{id}</if>
+        <if test="ip != null">and `IP` = #{ip}</if>
+        <if test="type != null">and `TYPE` = #{type}</if>
+        <if test="desc != null">and `DESC` = #{desc}</if>
+        <if test="createBy != null">and CREATE_BY = #{createBy}</if>
+        <if test="updateBy != null">and UPDATE_BY = #{updateBy}</if>
+        <if test="status != null">and `STATUS` = #{status}</if>
+        <if test="cdt != null">and `CDT` = #{cdt}</if>
+        <if test="udt != null">and `UDT` = #{udt}</if>
+        
+	</where>
+  </sql>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM gateway_ipset 
+    WHERE id = #{id}
+  </select>
+  
+  <!-- 单个插入 -->
+  <insert id="insert" parameterType="com.kaistart.gateway.domain.GatewayIpsetDO" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO gateway_ipset (`IP`,`TYPE`,`DESC`,CREATE_BY,UPDATE_BY,`STATUS`,`CDT`)  VALUES (#{ip},#{type},#{desc},#{createBy},#{updateBy},#{status},now())
+  </insert>
+  
+  <!-- 批量新增 -->
+  <insert id="batchInsert" parameterType="java.util.List">
+    INSERT INTO gateway_ipset
+    (`IP`,`TYPE`,`DESC`,CREATE_BY,UPDATE_BY,`STATUS`,`CDT`)
+    VALUES
+    <foreach collection="list" item="item" index="index" separator=",">
+       (#{item.ip},#{item.type},#{item.desc},#{item.createBy},#{item.updateBy},#{item.status},now())
+    </foreach>
+  </insert>
+  
+  <!-- 单个更新 -->
+  <update id="update" parameterType="com.kaistart.gateway.domain.GatewayIpsetDO">
+    UPDATE gateway_ipset
+    <set>
+           <if test="ip != null">
+        `IP`=#{ip},
+      </if>
+      <if test="type != null">
+        `TYPE`=#{type},
+      </if>
+      <if test="desc != null">
+        `DESC`=#{desc},
+      </if>
+      <if test="createBy != null">
+        CREATE_BY=#{createBy},
+      </if>
+      <if test="updateBy != null">
+        UPDATE_BY=#{updateBy},
+      </if>
+      <if test="status != null">
+        `STATUS`=#{status},
+      </if>
+
+    </set>
+    where ID = #{id}
+  </update>
+  
+  <!-- 单个更新 有版本号-->
+  <update id="updateByVersion" parameterType="com.kaistart.gateway.domain.GatewayIpsetDO">
+    UPDATE gateway_ipset
+    <set>
+           <if test="ip != null">
+        `IP`=#{ip},
+      </if>
+      <if test="type != null">
+        `TYPE`=#{type},
+      </if>
+      <if test="desc != null">
+        `DESC`=#{desc},
+      </if>
+      <if test="createBy != null">
+        CREATE_BY=#{createBy},
+      </if>
+      <if test="updateBy != null">
+        UPDATE_BY=#{updateBy},
+      </if>
+      <if test="status != null">
+        `STATUS`=#{status},
+      </if>
+
+     
+     version = version+1,
+    </set>
+    
+    WHERE id = #{id}  and version =#{version}
+  </update>
+  
+  <!-- 删除(逻辑删除) -->
+  <update id="delete" parameterType="com.kaistart.gateway.domain.GatewayIpsetDO" >
+    UPDATE gateway_ipset SET ddt = now(), is_delete = 1 WHERE id = #{id}
+  </update>
+
+  <!-- 删除（真删除） -->
+  <delete id="deleteDB" parameterType="com.kaistart.gateway.domain.GatewayIpsetDO" >
+    delete from gateway_ipset where id = #{id}
+  </delete>
+  
+  <!-- 查询所有 -->
+  <select id="selectList" resultMap="BaseResultMap" parameterType="Map">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM gateway_ipset
+    <include refid="where"/>
+    order by id desc
+  </select>
+  
+  <!--查询总数-->
+  <select id="selectCount" parameterType="Map" resultType="Integer">
+     SELECT count(*) FROM gateway_ipset  
+     <include refid="where"/>
+  </select>
+  
+  <!-- 分页查询 -->
+  <select id="selectPage" resultMap="BaseResultMap" parameterType="Map">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM gateway_ipset 
+    <include refid="where"/>
+    ORDER BY id DESC 
+    <if test="size != null or skip != null"> LIMIT #{skip}, #{size} </if>
+  </select>
+  
+  <!-- 单个查询 -->
+  <select id="selectById" parameterType="com.kaistart.gateway.domain.GatewayIpsetDO" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM gateway_ipset 
+    WHERE id = #{id}
+
+  </select>
+</mapper>

@@ -1,0 +1,406 @@
+#set($layout = "/layout/layout.vm") 
+#set($pageTitle = "树控件 demo页面")
+
+<h3>资源分配</h3>
+<hr>
+<div class="panel panel-default">
+  <div class="panel-heading">资源权限树</div>
+  <div class="panel-body">
+    <ul id="tree" class="ztree"></ul>
+	</div>
+	<button type="button" class="btn btn-success" role="submit"><i class="fa fa-check"></i>提交</button>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading">资源表格树</div>
+	<div class="panel-body">
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>名称</th>
+					<th style="width:120px;">类型</th>
+					<th style="width:60px;">排序</th>
+					<th style="width:280px;">操作</th>
+				</tr>
+			</thead>
+			<tbody role="tabletree" class="tabletree">
+			</tbody>
+		</table>
+	</div>
+</div>
+<script type="text/template" id="tableTreeTmpl">
+	<% _.each(nodes, function (node) { %>
+		<tr class="<%=level > 0 ? 'child level' + level : ''%>" pid="<%=pid%>" 
+			<%= parentExpand ? 'style="display:table-row;"' : '' %>>
+			<td>
+				<% if (node.category !== 'a' && node.children.length > 0) { %>
+				<span data-id="<%= node.id %>" class="trigger <%= node.expand ? 'expand' : '' %>">
+					<i class="fa fa-fw fa-caret-right"></i>
+				</span>
+				<% } else { %>
+					<span><i class="fa fa-fw"></i></span>
+				<% } %>
+				<span><%- node.name %></span>
+			</td>
+			<td>
+				<% if(node.category === 'd') { %>目录权限<% } %>
+				<% if(node.category === 'm') { %>菜单权限<% } %>
+				<% if(node.category === 'a') { %>操作权限<% } %>
+			</td>
+			<td><%- node.seq %></td>
+			<td>
+				<a class="btn btn-danger btn-xs" data-id="<%= node.id %>" role="delete"><i class="fa fa-trash"></i>删除</a>
+				<a class="btn btn-default btn-xs" data-id="<%= node.id %>" role="edit"><i class="fa fa-pencil"></i>编辑</a>
+				<% if (node.category !== 'a') { %>
+					<a class="btn btn-primary btn-xs" data-id="<%= node.id %>" role="add"><i class="fa fa-plus"></i>添加子节点</a>
+				<% } %>
+			</td>
+		</tr>
+		<% if (node.category !== 'a' && node.children.length > 0) { %>
+			<%= call(node.children, node.id, level + 1, node.expand) %>
+		<% } %>
+	<% }) %>
+</script>
+
+
+<script>
+	// 资源数据
+  var resources = [
+		{
+			"id": 1,
+			"pid": 0,
+			"name": "系统管理",
+			"category": "d",
+			"seq": 0,
+			"uri": "",
+			"cdt": 1504753370000,
+			"udt": 1504753370000
+		}, {
+			"id": 66,
+			"pid": 69,
+			"name": "用户分配角色",
+			"category": "a",
+			"seq": null,
+			"uri": "/auth/authz/authz",
+			"cdt": 1504753370000,
+			"udt": 1504753370000
+		}, {
+			"id": 58,
+			"pid": 69,
+			"name": "用户删除",
+			"category": "a",
+			"seq": null,
+			"uri": "/auth/user/proto/delete",
+			"cdt": 1504753370000,
+			"udt": 1504753370000
+		}, {
+			"id": 59,
+			"pid": 70,
+			"name": "角色删除",
+			"category": "a",
+			"seq": null,
+			"uri": "/auth/role/proto/delete",
+			"cdt": 1504753370000,
+			"udt": 1504753370000
+		}, {
+			"id": 60,
+			"pid": 71,
+			"name": "资源删除",
+			"category": "a",
+			"seq": null,
+			"uri": "/auth/resource/proto/delete",
+			"cdt": 1504753370000,
+			"udt": 1504753370000
+		}, {
+			"id": 61,
+			"pid": 69,
+			"name": "用户批量删除",
+			"category": "a",
+			"seq": null,
+			"uri": "/auth/user/proto/deleteList",
+			"cdt": 1504753370000,
+			"udt": 1504753370000
+		}, {
+			"id": 62,
+			"pid": 70,
+			"name": "角色批量删除",
+			"category": "a",
+			"seq": null,
+			"uri": "/auth/role/proto/deleteList",
+			"cdt": 1504753370000,
+			"udt": 1504753370000
+		}, {
+			"id": 63,
+			"pid": 69,
+			"name": "分配角色查询",
+			"category": "a",
+			"seq": null,
+			"uri": "/auth/authz/get",
+			"cdt": 1504753370000,
+			"udt": 1504753370000
+		}, {
+			"id": 64,
+			"pid": 70,
+			"name": "分配资源查询",
+			"category": "a",
+			"seq": null,
+			"uri": "/auth/permission/get",
+			"cdt": 1504753370000,
+			"udt": 1504753370000
+		}, {
+			"id": 67,
+			"pid": 70,
+			"name": "角色分配资源",
+			"category": "a",
+			"seq": null,
+			"uri": "/auth/permission/authz",
+			"cdt": 1504753370000,
+			"udt": 1504753370000
+		}, {
+			"id": 68,
+			"pid": 70,
+			"name": "角色授权",
+			"category": "a",
+			"seq": null,
+			"uri": "/auth/authz",
+			"cdt": 1504753370000,
+			"udt": 1504753370000
+		}, {
+			"id": 57,
+			"pid": 71,
+			"name": "资源修改",
+			"category": "a",
+			"seq": null,
+			"uri": "/auth/resource/proto/put",
+			"cdt": 1504753370000,
+			"udt": 1504753370000
+		}, {
+			"id": 56,
+			"pid": 70,
+			"name": "角色修改",
+			"category": "a",
+			"seq": null,
+			"uri": "/auth/role/proto/put",
+			"cdt": 1504753370000,
+			"udt": 1504753370000
+		}, {
+			"id": 55,
+			"pid": 69,
+			"name": "用户修改",
+			"category": "a",
+			"seq": null,
+			"uri": "/auth/user/proto/put",
+			"cdt": 1504753370000,
+			"udt": 1504753370000
+		}, {
+			"id": 46,
+			"pid": 70,
+			"name": "角色查询",
+			"category": "a",
+			"seq": null,
+			"uri": "/auth/role/proto/index",
+			"cdt": 1504753370000,
+			"udt": 1504753370000
+		}, {
+			"id": 47,
+			"pid": 71,
+			"name": "资源查询",
+			"category": "a",
+			"seq": null,
+			"uri": "/auth/resource/proto/index",
+			"cdt": 1504753370000,
+			"udt": 1504753370000
+		}, {
+			"id": 69,
+			"pid": 1,
+			"name": "用户管理",
+			"category": "m",
+			"seq": 1,
+			"uri": "/auth/user",
+			"cdt": 1504753370000,
+			"udt": 1504753370000
+		}, {
+			"id": 70,
+			"pid": 1,
+			"name": "角色管理",
+			"category": "m",
+			"seq": 2,
+			"uri": "/auth/role",
+			"cdt": 1504753370000,
+			"udt": 1504753370000
+		}, {
+			"id": 71,
+			"pid": 1,
+			"name": "资源管理",
+			"category": "m",
+			"seq": 3,
+			"uri": "/auth/resource",
+			"cdt": 1504753370000,
+			"udt": 1504753370000
+		}
+	]
+</script>
+<script>
+	// 选中情况
+  var permission = [{
+			"id": 989,
+			"resId": 66,
+			"roleId": 1,
+			"cdt": 1509521189000,
+			"udt": 1509521189000
+		}, {
+			"id": 989,
+			"resId": 70,
+			"roleId": 1,
+			"cdt": 1509521189000,
+			"udt": 1509521189000
+		}
+	]
+</script>
+<script>
+define('treeDemo', ['jquery', 'lodash', 'ztree'], function ($, _) {
+	// 树配置项
+  var setting = {
+    check: {
+			enable: true,
+			chkboxType: { "Y": "ps", "N": "s" }
+    },
+    data: {
+      simpleData: {
+        enable: true,
+        idKey: 'id',
+        pIdKey: 'pid'
+      }
+    }
+	}
+	// 处理数据，配置勾选情况
+  _.forEach(resources, function (r) {
+    var isChekced = !!_.find(permission, function (pm) {
+      return pm.resId === r.id
+    })
+    r.checked = isChekced
+  })
+	// 生成树
+	var treeObj = $.fn.zTree.init($("#tree"), setting, resources)
+	// 提交按钮
+	$('[role=submit]').on('click', function () {
+		// 获取所有节点
+		var nodes = treeObj.transformToArray(treeObj.getNodes())
+		// 筛选选中节点
+		var checkedNodes = _.filter(nodes, function (node) {
+			return node.checked
+		})
+		// 提取id转换数据格式
+		var submitData = _.map(checkedNodes, function (node) { return node.id }).join('-')
+
+		alert(submitData)
+	})
+
+
+	// 表格树
+	var render = _.template($('#tableTreeTmpl').html())
+	var renderTableTree = function (nodes, pid, level, parentExpand) {
+		var markup = render({
+			nodes: nodes,
+			level: level,
+			pid: pid,
+			call: renderTableTree,
+			parentExpand: parentExpand
+		})
+		return markup
+	}
+	var nodesMap = {}
+	var transformNodes = function (resData) {
+		var lastMap = nodesMap
+		nodesMap = {}
+
+		var roots = [], children = []
+		_.forEach(resData, function (r) {
+			var lastHasNode = lastMap[r.id]
+			var node = {
+				id: r.id,
+				pid: r.pid,
+				name: r.name,
+				category: r.category,
+				seq: r.seq,
+				children: [],
+				expand: lastHasNode && lastHasNode.expand
+			}
+			if (node.pid === 0) {
+				roots.push(node)
+			} else {
+				children.push(node)
+			}
+			nodesMap[node.id] = node
+		})
+		_.forEach(children, function (node) {
+			var parent = nodesMap[node.pid]
+			if (parent) {
+				parent.children.push(node)
+			} else {
+				console.log('can\'t find parentNode which id is: ' + node.pid + ', please check data')
+			}
+		})
+		return roots
+	}
+
+	var jTabletree = 	$('[role=tabletree]')
+	var propagateExpand = function ($expand) {
+		if (!$expand || $expand.length == 0) { return }
+		var id = $expand.data('id')
+		$expand.addClass('expand')
+		var childRows = jTabletree.find('[pid=' + id + ']')
+		childRows.show()
+		for (var i = 0; i < childRows.length; i++) {
+			var $trigger = childRows.eq(i).find('.trigger')
+			if ($trigger.is('.expand')) {
+				propagateExpand($trigger)
+			} else {
+				continue
+			}
+		}
+
+		nodesMap[id].expand = true
+	}
+	var propagateContract = function ($expand) {
+		if (!$expand || $expand.length == 0) { return }
+		var id = $expand.data('id')
+		var childRows = jTabletree.find('[pid=' + id + ']')
+		childRows.hide()
+		for (var i = 0; i < childRows.length; i++) {
+			var $trigger = childRows.eq(i).find('.trigger')
+			if ($trigger.is('.expand')) {
+				propagateContract($trigger)
+			} else {
+				continue
+			}
+		}
+	}
+	var doContract = function ($expand) {
+		var id = $expand.data('id')
+		$expand.removeClass('expand')
+		propagateContract($expand)
+
+		nodesMap[id].expand = false
+	}
+
+	jTabletree.on('click', '.trigger', function () {
+		var id = $(this).data('id')
+		var isExpand = $(this).is('.expand')
+		if (isExpand) {
+			doContract($(this))
+		} else {
+			propagateExpand($(this))
+		}
+	})
+
+	var initTableTree = function () {
+		var roots = transformNodes(resources)
+		var markup = renderTableTree(roots, 0, 0, false)
+		jTabletree.html(markup)
+	}
+	initTableTree()
+
+})
+require(['treeDemo'])
+</script>

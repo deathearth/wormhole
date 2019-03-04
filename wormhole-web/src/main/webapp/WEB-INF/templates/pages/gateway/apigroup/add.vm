@@ -1,0 +1,91 @@
+﻿#set($layout = "/layout/layout.vm")
+#set($pageTitle = "新增分组")
+#set($pageScript = "pages/gateway/apigroup/add")
+
+
+<form class="form-horizontal">
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            新增分组
+        </h3>
+    </div>
+    <div class="panel-body">
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">
+        <a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="<div style='width:190px;text-align:left;'>名称保证唯一<br>格式:系统名称(小写)<br>如:uic</div>"><span class="glyphicon glyphicon-question-sign"></span></a>
+        API分组名称</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" id="name" name="name" placeholder="请输入API分组名称" value="" maxlength="20">
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">API分组描述</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" id="description" name="description" placeholder="请输入API分组描述信息" value="" maxlength="200">
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">分组状态</label>
+        <div class="col-sm-6">
+        <label class="radio-inline">
+        <input type="radio" name="status" id="status1" value="0" disabled> 删除
+    	</label>
+    	<label class="radio-inline">
+        <input type="radio" name="status" id="status2" value="1" checked> 正常
+    	</label>
+        </div>
+    </div>
+    
+    <!--新增时，以下信息不用填写 -->
+    <!-- 
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">创建者</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="createBy" placeholder="" value="" maxlength="20" readonly="readonly">
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">修改者</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="updateBy" placeholder="" value="" maxlength="20" readonly="readonly">
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">创建时间</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="cdt" placeholder="" value="" maxlength="20" readonly="readonly">
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">修改时间</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="udt" placeholder="" value="" maxlength="20" readonly="readonly">
+        </div>
+    </div>
+    -->
+    
+	<div class="form-group">
+        <!-- <label class="col-sm-2 col-sm-offset-1 control-label">版本号</label>  -->
+        <div class="col-sm-6">
+            <input type="hidden" class="form-control" name="version" placeholder="请输入版本号" value="1" maxlength="20">
+        </div>
+    </div>
+    
+    
+    <div class="form-group">
+        <div class="col-sm-6 col-sm-offset-3">
+            <button type="button" class="btn btn-default" role="cancel">取消</button>
+            <button type="submit" class="btn btn-primary">提交</button>
+        </div>
+    </div>
+</div>
+</div>
+</form>

@@ -1,0 +1,261 @@
+html {
+  overflow: hidden;
+  height: 100%;
+}
+body {
+  overflow: auto;
+  height: 100%;
+}
+
+.table td {
+  word-break: break-all;
+}
+
+form[role="search"] .form-group {
+  margin-left: 20px;
+  margin-bottom: 8px;
+}
+form[role="search"] .form-control {
+  width: 120px;
+}
+.form-horizontal .dash-after:after {
+  content: '';
+  position: absolute;
+  height: 50%;
+  top: 0;
+  right: -5px;
+  border-bottom: 1px solid #000;
+  width: 10px;
+}
+.btn > .fa {
+  padding-right: 5px;
+}
+.img-box {
+  margin: 0;
+  height: 150px;
+  width: 150px;
+  background: #e7e7e7 url(../image/add.png) no-repeat center center;
+  cursor: pointer;
+}
+.img-box > div.thumbnail {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+.img-box > div.thumbnail:before {
+  content: '';
+  height: 100%;
+  width: 0;
+  vertical-align: middle;
+  display: inline-block;
+}
+.img-box > div > img{
+  max-height: 100%;
+  max-width: 100%;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+.page-box {
+  padding-right: 20px;
+}
+.page-box > .pagination {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.statistics-bar {
+  padding: 6px 12px;
+}
+
+.vertical-middle:before {
+  content: ' ';
+  display: inline-block;
+  height: 100%;
+  width: 0;
+  vertical-align: middle;
+  visibility: hidden;
+  margin-left: -5px;
+}
+.vertical-middle > .vertical-item {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.json-viewer {
+  padding: 12px 20px;
+}
+.json-viewer label {
+  padding-right: 10px;
+}
+.json-viewer .fa {
+  cursor: pointer;
+}
+
+.tabletree tr.child {
+  display: none;
+}
+.tabletree .level1 > td:nth-child(1) {
+  padding-left: 20px;
+}
+.tabletree .level2 > td:nth-child(1) {
+  padding-left: 40px;
+}
+.tabletree .level3 > td:nth-child(1) {
+  padding-left: 60px;
+}
+.tabletree .level4 > td:nth-child(1) {
+  padding-left: 80px;
+}
+.tabletree .level5 > td:nth-child(1) {
+  padding-left: 100px;
+}
+.tabletree .trigger {
+  cursor: pointer;
+}
+.tabletree .trigger.expand > .fa {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.table-ellipsis {
+  table-layout: fixed;
+  position: relative;
+}
+.table-ellipsis td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.table-ellipsis .tip-pack {
+  padding: 0;
+  margin: 0;
+}
+.table-ellipsis .tip-pack > .checker {
+  width: auto;
+  white-space: nowrap;
+  position: absolute;
+  visibility: hidden;
+}
+.table-ellipsis .tip-pack > .tip {
+  display: none;
+  position: absolute;
+  max-width: 280px;
+  background: #fefefe;
+  color: #111;
+  border: 1px solid #aaa;
+  padding: 6px;
+  border-radius: 5px;
+  word-break: break-all;
+  box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+.table-ellipsis .tip-pack > .tip:before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 20px;
+  height: 0;
+  width: 0;
+  border-style: solid;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-bottom-color: #a0a0a0;
+  border-right-color: transparent;
+  border-width: 0 8px 8px 8px;
+}
+.table-ellipsis .tip-pack > .tip:after {
+  content: '';
+  position: absolute;
+  top: -7px;
+  left: 21px;
+  height: 0;
+  width: 0;
+  border-style: solid;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-bottom-color: #fefefe;
+  border-right-color: transparent;
+  border-width: 0 7px 7px 7px;
+}
+.table-ellipsis .tip-pack > .tip.right:before {
+  left: initial;
+  right: 20px;
+}
+.table-ellipsis .tip-pack > .tip.right:after {
+  left: initial;
+  right: 21px;
+}
+.table-ellipsis .tip-pack > .tip.bottom:before {
+  top: initial;
+  bottom: -8px;
+  border-width: 8px 8px 0 8px;
+  border-top-color: #a0a0a0;
+  border-bottom-color: transparent;
+}
+.table-ellipsis .tip-pack > .tip.bottom:after {
+  top: initial;
+  bottom: -7px;
+  border-width: 7px 7px 0 7px;
+  border-top-color: #fefefe;
+  border-bottom-color: transparent;
+}
+
+.table-resizable thead th {
+  position: relative;
+}
+.table-resizable .resizer {
+  display: block;
+  position: absolute!important;
+  top: 0;
+  right: 0;
+  margin: 0;
+  width: .5em;
+  height: 100%;
+  padding: 0;
+  cursor: col-resize;
+  border: 1px solid transparent;
+}
+.table-resizable.resizing {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.autocomplete {
+  display: block;
+  position: relative;
+}
+.form-inline .autocomplete {
+  display: inline-block;
+}
+.autocomplete .autocomplete-list {
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 5px 0;
+  display: none;
+  max-height: 150px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 99;
+}
+.autocomplete .autocomplete-list > li {
+  padding: 0 8px;
+  line-height: 26px;
+  height: 26px;
+  cursor: pointer;
+}
+.autocomplete .autocomplete-list > li:hover {
+  background-color: #f5f5f5;
+}
+.autocomplete .autocomplete-list > li.empty {
+  cursor: default;
+}
+.autocomplete .autocomplete-list > li.empty:hover {
+  background-color: #fff;
+}

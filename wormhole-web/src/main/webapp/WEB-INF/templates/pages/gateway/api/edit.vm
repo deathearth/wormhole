@@ -1,0 +1,418 @@
+﻿#set($layout = "/layout/layout.vm")
+#set($pageTitle = "编辑接口信息")
+#set($pageScript = "pages/gateway/api/edit")
+
+<form class="form-horizontal" name="base">
+<div class="panel panel-default">
+	<div class="panel-heading">
+        <h3 class="panel-title">
+            本页分步操作1.保存基本信息;2保存响应信息;3维护参数信息。
+        </h3>
+    </div>
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            API基本信息
+        </h3>
+    </div>
+    <div class="panel-body">
+
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">分组信息</label>
+        <div class="col-sm-6">
+        	<input type="hidden" name="id" id="id" value=$!{gatewayApi.id}>
+            <select id="groupId" name="groupId" class="form-control" role="select" style="width:220px;height:33px;" >
+            </select>
+        </div>
+    </div>
+
+ <script id="selectTmpl" type="text/template">
+<% _.forEach(list, function(row,index) { %>
+ <option value=<%= row.id%> <% if(row.id ==$!{gatewayApi.groupId} ) { %>selected <% }%>><%= row.name%>   </option>
+<% }) %>
+</script>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label"><a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="<div style='width:200px;text-align:left;'>名称保证唯一<br>格式:业务类型.方法名<br>示例:user.login</div>"><span class="glyphicon glyphicon-question-sign"></span></a>API名称</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" id="name" name="name" placeholder="请输入API名称" value="$!{gatewayApi.name}" maxlength="50">
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">API描述</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" id="description" name="description" placeholder="请输入API描述信息" value="$!{gatewayApi.description}" maxlength="200">
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">API状态</label>
+        <div class="col-sm-6">
+	        <label class="radio-inline">
+	        <input type="radio" name="status" id="status1" value="0" #if($gatewayApi.status == 0) checked  #end> 删除
+	    	</label>
+	    	<label class="radio-inline">
+	        <input type="radio" name="status" id="status2"  value="1" #if($gatewayApi.status == 1) checked  #end> 上线
+	    	</label>
+	    	<label class="radio-inline">
+	        <input type="radio" name="status" id="status3"  value="2" #if($gatewayApi.status == 2) checked  #end> 下线
+	    	</label>
+	    	<label class="radio-inline">
+	        <input type="radio" name="status" id="status3"  value="3" #if($gatewayApi.status == 3) checked  #end> 未上线
+	    	</label>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label"><a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="<div style='width:200px;text-align:left;'>
+        根据业务及请求参数的类型不同将接口分为三种方式：<br>
+        1.普通接口,适用于大部分场景<br>
+        2.流式接口,隐藏保留,兼容历史数据<br>
+        3.键值接口,隐藏,无应用场景<br>
+        4.回调接口,适用所有回调业务
+        </div>"><span class="glyphicon glyphicon-question-sign"></span></a>接口类型</label>
+        <div class="col-sm-6">
+	        <label class="radio-inline">
+	        	<input type="radio" name="special" id="special1" value="0" #if($gatewayApi.special == 0) checked  #end disabled><a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="参数放在url、header、body中，可参与鉴权"><span class="glyphicon glyphicon-question-sign"></span></a>普通接口
+	    	</label>
+	    	
+	    	<label class="radio-inline"  #if($gatewayApi.special != 1) style="display:none;"  #end >
+	        	<input type="radio" name="special" id="special2"  value="1" #if($gatewayApi.special == 1) checked  #end disabled><a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="参数可以是流或者长字符串，放在body中，接口不鉴权，新增接口已经无法选择该类型"><span class="glyphicon glyphicon-question-sign"></span></a>流式接口
+	    	</label>
+	    	<!--这里做隐藏处理,兼容历史数据 -->
+	    	<label class="radio-inline" style="display:none;">
+	        	<input type="radio" name="special" id="special3"  value="2" #if($gatewayApi.special == 2) checked  #end disabled><a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="参数以键值对的形式出现在URL中，接口不鉴权"><span class="glyphicon glyphicon-question-sign"></span></a>键值接口
+	    	</label>
+	    	
+	    	<label class="radio-inline" >
+	        	<input type="radio" name="special" id="special4" value="3" #if($gatewayApi.special == 3) checked  #end disabled><a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" 
+	        	title="<div style='text-align:left;'>统一的三方回调类型,将url中的参数和body中的参数封装到map中,如:<br><div>
+	        	<div style='text-align:left;'>Map<String,Object> map = new Map();<br></div>
+	        	<div style='text-align:left;'>map.put('paramA',Object)<br></div><div style='text-align:left;'>map.put('paramB',Object)<br></div>
+	        	<div style='text-align:left;'>map.put('paramC',Object)<br></div><div style='text-align:left;'>map.put('body',Object)<br></div>
+	        	<div style='text-align:left;'>其中url参数可能个数为0<br></div><div style='text-align:left;'>根据map.keySet获取参数名称,body一直存在<br></div>">
+	        	<span class="glyphicon glyphicon-question-sign"></span></a>回调接口
+	    	</label>
+	    </div>
+    </div>
+    
+    <div class="form-group" #if($gatewayApi.special != 0) style="display:none;"  #end  id="block1">
+        <label class="col-sm-2 col-sm-offset-1 control-label">请求类型</label>
+        <div class="col-sm-6">
+        <label class="radio-inline">
+        	<input type="radio" name="httpMethod" id="http_method1" value="1" #if($gatewayApi.httpMethod == 1) checked  #end> get
+    	</label>
+    	<label class="radio-inline">
+        	<input type="radio" name="httpMethod" id="http_method2" value="2" #if($gatewayApi.httpMethod == 2) checked  #end> post
+    	</label>
+        </div>
+    </div>
+    
+    
+    <div class="form-group" #if($gatewayApi.special != 0) style="display:none;"  #end id="block2">
+        <label class="col-sm-2 col-sm-offset-1 control-label">是否鉴权</label>
+        <div class="col-sm-6">
+        <label class="radio-inline">
+        	<input type="radio" name="isAuth" id="is_auth1" value="1" #if($gatewayApi.isAuth == 1) checked  #end>是
+    	</label>
+    	<label class="radio-inline">
+        	<input type="radio" name="isAuth" id="is_auth2" value="0" #if($gatewayApi.isAuth == 0) checked  #end> 否
+    	</label>
+        </div>
+    </div>
+    
+    <div class="form-group" #if($gatewayApi.special != 0) style="display:none;"  #end id="block3">
+        <label class="col-sm-2 col-sm-offset-1 control-label">是否登录</label>
+        <div class="col-sm-6">
+        <label class="radio-inline">
+        	<input type="radio" name="isLogin" id="is_login1" value="1" #if($gatewayApi.isLogin == 1) checked  #end>是
+    	</label>
+    	<label class="radio-inline">
+        	<input type="radio" name="isLogin" id="is_login2" value="0" #if($gatewayApi.isLogin == 0) checked  #end> 否
+    	</label>
+        </div>
+    </div>
+    
+    
+    <div class="form-group" #if($gatewayApi.special != 0) style="display:none;"  #end id="block4">
+        <label class="col-sm-2 col-sm-offset-1 control-label"><a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="为正整数,做鉴权版本控制"><span class="glyphicon glyphicon-question-sign"></span></a>鉴权协议版本</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" id="authVersion" name="authVersion" placeholder="请输入鉴权协议版本" value="$!{gatewayApi.authVersion}" maxlength="10">
+        </div>
+    </div>
+    
+    <!--只有回调的时候才需要设置 -->
+    <div class="form-group" id="block5" #if($gatewayApi.special != 3) style="display:none;"  #end>
+        <label class="col-sm-2 col-sm-offset-1 control-label">
+        <a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="
+        <div style='text-align:left'>根据要求,设置响应头信息,无要求则不写。json格式,如:{'CharacterEncoding':'utf-8','ContentType':'text/xml;charset=UTF-8',
+'Cache-Control':'no-cache'}</div>
+        ">
+        <span class="glyphicon glyphicon-question-sign"></span></a>回调响应头</label>
+        <div class="col-sm-6">
+            <textarea class="form-control"  rows="5" id="responseHeader" name="responseHeader">$!{gatewayApi.responseHeader}</textarea>
+        </div>
+    </div>
+
+	<div style="text-left;width:100px;background-color:#d9d9d9;">dubbo信息相关</div>
+        
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label"><a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="包名路径+接口名称,如:<br>com.dubbo.service.Communication"><span class="glyphicon glyphicon-question-sign"></span></a>接口全路径</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="serviceName" placeholder="请输入接口的全路径" value="$!{gatewayApi.serviceName}" maxlength="256">
+        </div>
+    </div>
+    
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label"><a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="接口方法的名称"><span class="glyphicon glyphicon-question-sign"></span></a>方法名称</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="serviceMethod" placeholder="请输入方法的名称" value="$!{gatewayApi.serviceMethod}" maxlength="128">
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label"><a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="做版本控制需要"><span class="glyphicon glyphicon-question-sign"></span></a>服务版本号</label>
+        <div class="col-sm-6">
+            <select id="serviceVersion" name="serviceVersion" class="form-control" style="width:220px;height:33px;">
+	            <option value="1.0.0.local"  #if($gatewayApi.serviceVersion == '1.0.0.local') selected  #end >1.0.0.local</option>
+	        	<option value="1.0.0.dev"    #if($gatewayApi.serviceVersion == '1.0.0.dev')   selected  #end >1.0.0.dev</option>
+	        	<option value="1.0.0.daily"  #if($gatewayApi.serviceVersion == '1.0.0.daily') selected  #end >1.0.0.daily</option>
+	        	<option value="1.0.0.prepub" #if($gatewayApi.serviceVersion == '1.0.0.prepub') selected  #end >1.0.0.prepub</option>
+	        	<option value="1.0.0.online" #if($gatewayApi.serviceVersion == '1.0.0.online') selected  #end >1.0.0.online</option>
+	        </select>
+        </div>
+    </div>
+
+	<div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">超时时间</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="timeOut" placeholder="请输入超时时间" value="$!{gatewayApi.timeOut}" maxlength="20">
+        </div>
+    </div>
+
+	<div style="text-left;width:100px;background-color:#d9d9d9;">附加信息相关</div>
+   
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">创建者</label>
+        <div class="col-sm-6">
+        	<div style="height:34px;padding:6px 12px;"> $!{gatewayApi.createBy} </div>
+            <!-- <input type="text" class="form-control" name="createBy" placeholder="" value="" maxlength="20" disabled>  -->
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">修改者</label>
+        <div class="col-sm-6">
+            <!-- <input type="text" class="form-control" name="updateBy" placeholder="" value="$!{gatewayApi.updateBy}" maxlength="20" disabled>  -->
+            <select id="updateBy" name="updateBy" class="form-control" role="auth" style="width:200px;height:33px;" >
+            	$!{auths}
+            </select>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">创建时间</label>
+        <div class="col-sm-6">
+        	<div style="height:34px;padding:6px 12px;"> $!{gatewayApi.cdt} </div>
+            <!-- <input type="text" class="form-control" name="cdt" placeholder="" value="$!{gatewayApi.cdt}" maxlength="20" disabled>  -->
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">修改时间</label>
+        <div class="col-sm-6">
+        	<div style="height:34px;padding:6px 12px;"> $!{gatewayApi.udt} </div>
+            <!-- <input type="text" class="form-control" name="udt" placeholder="" value="$!{gatewayApi.udt}" maxlength="20" disabled>  -->
+        </div>
+    </div>
+    <!-- 
+	<div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">版本号</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="version" placeholder="请输入版本号" value="$!{gatewayApi.version}" maxlength="20" disabled>
+        </div>
+    </div>
+    -->
+</div>
+</div>   
+	<div class="form-group">
+        <div class="col-sm-6 col-sm-offset-3">
+            <!-- <button type="button" class="btn btn-default" role="cancel">取消</button> -->
+            <button type="submit" class="btn btn-primary">提交</button>
+        </div>
+    </div>
+</form>
+
+<form class="form-horizontal">
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            关联标签设置
+        </h3>
+    </div>
+    <div class="panel-body">    
+    	<div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">
+        <a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="一个接口可以关联多个标签。<br>
+        也可以关联一、二、三级标签
+        "><span class="glyphicon glyphicon-question-sign"></span></a>
+        关联标签</label>
+	        <div class="col-sm-6" id="marks">
+	          无
+	        </div>
+   	    </div>
+    </div>
+</div>
+<div class="form-group">
+        <div class="col-sm-6 col-sm-offset-3">
+            <button type="button" class="btn btn-primary" role="link">绑定标签</button>
+        </div>
+</div>
+</form>
+
+<!-- 示例 start -->  
+<form class="form-horizontal" ></form>
+<div class="form-horizontal">
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            API请求示例
+        </h3>
+    </div>
+    <div class="panel-body">    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">
+        <a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="调用接口后返回的结果，确保是可正常解析的json串,为mock功能提供数据。注：回调接口不限制"><span class="glyphicon glyphicon-question-sign"></span></a>
+        结果示例</label>
+        <div class="col-sm-6">
+        	<input type="hidden" name="apiId" id="apiId" value=$!{gatewayApi.id}>
+        	<input type="hidden" name="version" id="version" value=1>
+            <!--<input type="text" class="form-control" name="example" placeholder="" value="$!{gatewayApiResult.example}" maxlength="20" >  -->
+            <textarea class="form-control"  rows="20" id="example" name="example">$!{gatewayApiResult.example}</textarea>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">
+        <a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="对响应结果的解释"><span class="glyphicon glyphicon-question-sign"></span></a>
+        响应参数</label>
+        <div class="col-sm-6">
+            <!--<input type="text" class="form-control" name="resultDesc" placeholder="" value="$!{gatewayApiResult.resultDesc}" maxlength="20" > -->
+            <textarea class="form-control"  rows="20" id="resultDesc" name="resultDesc">$!{gatewayApiResult.resultDesc}</textarea>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">
+        <a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="返回code及对应解释"><span class="glyphicon glyphicon-question-sign"></span></a>
+        响应码<br>
+        </label>
+        <div class="col-sm-6">
+            <!-- <input type="text" class="form-control" name="codeDesc" placeholder="" value="$!{gatewayApiResult.codeDesc}" maxlength="20" > -->
+            <textarea class="form-control"  rows="20" id="codeDesc" name="codeDesc">$!{gatewayApiResult.codeDesc}</textarea>
+            <a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="请确保服务响应码和网关响应表不会产生歧义!"><span class="glyphicon glyphicon-question-sign"></span></a>
+        <a href="http://wiki.kaistart.net/pages/viewpage.action?pageId=11111786" target="_blank">网关响应码</a>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">创建时间</label>
+        <div class="col-sm-6">
+        	<div style="height:34px;padding:6px 12px;"> $!{gatewayApiResult.cdt} </div>
+            <!--  <input type="text" class="form-control" name="cdt" placeholder="" value="$!{gatewayApiResult.cdt}" maxlength="20" disabled>  -->
+        </div>
+    </div>
+</div>
+</div>   
+	<div class="form-group">
+        <div class="col-sm-6 col-sm-offset-3">
+            <button type="button" class="btn btn-primary" role="example" name="example" >提交</button>
+        </div>
+    </div>
+</div>
+<!-- 示例 end -->  
+
+<form class="form-inline clearfix" role="search" name="search">
+<input type="hidden" name="apiId" id="apiId" value=$!{gatewayApi.id}>
+</form>
+<form class="form-inline clearfix" role="request" name="request">
+<div class="panel panel-default" >
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            API参数信息
+        </h3>
+    </div>
+    <div class="panel-body"> 
+  			<div class="form-group">
+    			<input type="hidden" id="apiId" name="apiId" value='$!{gatewayApi.id}'>
+    			<input type="hidden" id="version" name="version" value='0'>
+  			</div>
+    <table class="table table-bordered table-striped" id="requests">
+	  <thead>
+	    <tr>
+	      <!--
+	      <th>主键</th>
+	      <th>apiId</th>
+	      -->
+	      <th>顺序<a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="0~无穷大"><span class="glyphicon glyphicon-question-sign"></span></a></th>
+	      <th>名称<a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="定义接口时的方法形参"><span class="glyphicon glyphicon-question-sign"></span></a></th>
+	      <th>类型<a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="1:String;<br>2:int;<br>3:long;<br>4:bool;<br>5:float;<br>6:double;<br>7:自定义类型"><span class="glyphicon glyphicon-question-sign"></span></a></th>
+	      <!--<th>细分类型<a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="在定义接口时,严格区分基本类型和封装类型">
+	      <span class="glyphicon glyphicon-question-sign"></span></a></th> -->
+	      <th>类型名称<a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="
+					<div style='text-align:left;'>基本类型：int,long,<s>bool</s>,float,double</div>
+					<div style='text-align:left;'>封装类型：java.lang.String;java.lang.Integer;<br>java.lang.Long;<s>java.lang.Boolean;</s><br>java.lang.Float;java.lang.Double;</div>
+					<div style='text-align:left;'>自定义类型：com.xx.xxx.xxxdomain</div>
+					"><span class="glyphicon glyphicon-question-sign"></span></a></th>
+	      <th>必传</th>
+	      <th>参数示例<a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="
+					<div style='text-align:left;'>String:这是一个参数示例</div>
+					<div style='text-align:left;'>int:1024</div>
+					<div style='text-align:left;'>long:1024l</div>
+					<div style='text-align:left;'><s>bool:false</s>(已禁用)</div>
+					<div style='text-align:left;'>float:1024f</div>
+					<div style='text-align:left;'>double:1024d</div>
+					<div style='text-align:left;'>自定义:entity对象</div>
+					"><span class="glyphicon glyphicon-question-sign"></span></a></th>
+	      <th>参数说明<a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="对参数的解释"><span class="glyphicon glyphicon-question-sign"></span></a></th>
+	      <th>创建时间</th>  
+	      <th>操作</th>
+	    </tr>
+	  </thead>
+	  <tbody role="apilist">
+	  </tbody>
+	</table>
+</div>
+</div>
+<script id="apilistTmpl" type="text/template">
+<% _.forEach(list, function(row,index) { %>
+  <tr>
+      <td style='width:60px;'><%= row.index %></td>
+      <td style='width:80px;'><%= row.name%></td>
+      <td style='width:60px;'><%= row.type%></td>
+      <!-- <td><%= row.typeName.indexOf(".")<1&&(row.type>1&&row.type<7)?"基本类型":"封装类型"  %></td> -->
+      <td><%= row.typeName%></td>
+      <td><%= row.isRequired==1?"是":"否"%></td>
+      <% if(row.type<7){ %> 
+      	<td><%= row.example %></td>
+      	<td><%= row.description %></td>
+      <% }else{ %> 
+      	<td><textarea disabled class='form-control' rows="10" style='width:250px;' ><%= row.example %></textarea></td>
+      	<td><textarea disabled class='form-control' rows="10" style='width:250px;' ><%= row.description %></textarea></td>
+      <% } %>
+      <td><%= row.cdt %></td>
+      <td>
+          <a href="javascript:" data-id="<%= row.id %>" role="edit">编辑</a>
+          <a href="javascript:" data-id="<%= row.id %>" role="delete">删除</a>
+      </td>
+  </tr>
+<% }) %>
+</script>
+
+	<div class="form-group" >
+        <div class="col-sm-6 col-sm-offset-3">
+            <button type="button" class="btn btn-primary" role="addRequest">新增</button>
+        </div>
+    </div>
+</form>

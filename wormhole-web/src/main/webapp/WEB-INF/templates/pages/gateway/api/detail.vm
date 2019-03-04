@@ -1,0 +1,342 @@
+#set($layout = "/layout/layout.vm")
+#set($pageTitle = "API管理-接口详情")
+#set($pageScript = "pages/gateway/api/detail")
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            API接口详细信息
+        </h3>
+    </div>
+    <div class="panel-body">
+
+    <div class="form-group">
+    	<table border="0" width="800px">
+    		<tr height="44px;">
+    			<td>接口 ID:</td><td width="150px">$!{gatewayApi.id}</td>
+    			<td>所属分组:</td><td><select id="groupId" name="groupId" class="form-control" role="select" style="width:220px;height:33px;" >
+            </select></td>
+    			<td>接口状态:<a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="<div style='width:200px;text-align:left;'>
+        <br>
+        1.删除(不可用状态)<br>
+        2.上线(可用状态)<br>
+        3.下线(不可用状态)<br>
+        4.未上线(不可用状态)
+        </div>"><span class="glyphicon glyphicon-question-sign"></span></a>        </td><td>
+    				#if($gatewayApi.status == 0)        <font color="red">删除</font>
+    				#elseif($gatewayApi.status == 1)	<font color="green">上线</font>
+    				#elseif($gatewayApi.status == 2)	<font color="grey">下线</font>
+    				#elseif($gatewayApi.status == 3)	<font color="yellow">未上线</font>
+    				#end
+    			</td>
+    		</tr>
+    		
+    		<tr height="44px;">
+    			<td>接口类型:<a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="<div style='width:200px;text-align:left;'>
+        根据业务及请求参数的类型不同将接口分为三种方式：<br>
+        1.普通接口,适用于大部分场景<br>
+        2.流式接口,隐藏保留,兼容历史数据<br>
+        3.键值接口,隐藏,无应用场景<br>
+        4.回调接口,适用所有回调业务
+        </div>"><span class="glyphicon glyphicon-question-sign"></span></a>
+        	</td><td>
+					#if($gatewayApi.special == 0)普通接口
+					#elseif($gatewayApi.status == 1)流式接口
+					#elseif($gatewayApi.status == 2)键值接口
+					#elseif($gatewayApi.status == 3)回调接口
+    				#end
+						</td>
+    			<td>请求类型:</td><td>
+					#if($gatewayApi.special == 0 && $gatewayApi.httpMethod == 1)GET
+					#elseif($gatewayApi.special == 0 && $gatewayApi.httpMethod == 2)POST
+					#else 
+    				#end
+				</td>
+    			<td>鉴权版本:</td><td>$!{gatewayApi.authVersion}
+    			</td>
+    		</tr>
+    		
+    		<tr height="44px;">
+    			<td>是否登录:</td><td>
+	    			#if($gatewayApi.special == 0 && $gatewayApi.isLogin == 1)是
+					#elseif($gatewayApi.special == 0 && $gatewayApi.isLogin == 0)否
+					#else 
+	    			#end
+	    		</td>
+    			<td>创&nbsp;建&nbsp;&nbsp;者:</td><td>$!{gatewayApi.createBy}</td>
+    			<td>创建时间:</td><td>$!{gatewayApi.cdt}</td>
+    		</tr>
+    		
+    		<tr height="44px;">
+    			<td>是否鉴权</td><td>
+    			#if($gatewayApi.special == 0 && $gatewayApi.isAuth == 1)需要
+				#elseif($gatewayApi.special == 0 && $gatewayApi.isAuth == 2)不需要
+				#else 
+    			#end
+    			</td>
+    			<td>修&nbsp;改&nbsp;&nbsp;者:</td><td>$!{gatewayApi.updateBy}</td>
+    			<td>修改时间:</td><td>$!{gatewayApi.udt}</td>
+    		</tr>
+    		
+    		<tr height="44px;">
+    			<td>API名称:</td><td colspan="5"><B>$!{gatewayApi.name}</B></td>
+    		</tr>
+    		
+    		<tr height="44px;">
+    			<td>接口描述:</td><td colspan="5">$!{gatewayApi.description}</td>
+    		</tr>
+    		
+    		<tr height="44px;">
+    			<td>接口地址:</td><td colspan="5">
+    			#if($!{gatewayApi.special} == 3)
+					#if($!{env} == 1)
+		      			http://127.0.0.1/gateway/callback/$!{gatewayApi.name}
+		      		#elseif($!{env} == 2)	
+		      			https://devapi.kaistart.net/gateway/callback/$!{gatewayApi.name}
+		      		#elseif($!{env} == 3)	
+		      			https://t2.kaistart.net/gateway/callback/$!{gatewayApi.name}
+		      		#elseif($!{env} == 4)	
+		      			https://gw.kaishiba.com/gateway/callback/$!{gatewayApi.name}
+		      		#elseif($!{env} == 5)	
+		      			
+		      		#end
+				#else
+		      		#if($!{env} == 1)
+		      			http://127.0.0.1/gateway/api?apiName=$!{gatewayApi.name}&client=android&clientversion=1.0.0.1&xxx=xx
+		      		#elseif($!{env} == 2)	
+		      			https://devapi.kaistart.net/gateway/api?apiName=$!{gatewayApi.name}&client=android&clientversion=1.0.0.1&xxx=xx
+		      		#elseif($!{env} == 3)	
+		      			https://t2.kaistart.net/gateway/api?apiName=$!{gatewayApi.name}&client=android&clientversion=1.0.0.1&xxx=xx
+		      		#elseif($!{env} == 4)	
+		      			https://gw.kaishiba.com/gateway/api?apiName=$!{gatewayApi.name}&client=android&clientversion=1.0.0.1&xxx=xx
+		      		#elseif($!{env} == 5)	
+		      			
+		      		#end
+		      	#end
+				</td>
+    		</tr>
+    		<tr height="44px;">
+    			<td>Mock地址:</td><td colspan="5">
+    			#if($!{gatewayApi.special} == 3)
+					#if($!{env} == 1)
+		      			http://127.0.0.1/gateway/callback/$!{gatewayApi.name}?mock=1
+		      		#elseif($!{env} == 2)	
+		      			https://devapi.kaistart.net/gateway/callback/$!{gatewayApi.name}?mock=1
+		      		#elseif($!{env} == 3)	
+		      			https://t2.kaistart.net/gateway/callback/$!{gatewayApi.name}?mock=1
+		      		#elseif($!{env} == 4)	
+		      			https://gw.kaishiba.com/gateway/callback/$!{gatewayApi.name}?mock=1
+		      		#elseif($!{env} == 5)	
+		      			
+		      		#end
+				#else
+		      		#if($!{env} == 1)
+		      			http://127.0.0.1/gateway/api?apiName=$!{gatewayApi.name}&client=android&clientversion=1.0.0.1&xxx=xx&mock=1
+		      		#elseif($!{env} == 2)	
+		      			https://devapi.kaistart.net/gateway/api?apiName=$!{gatewayApi.name}&client=android&clientversion=1.0.0.1&xxx=xx&mock=1
+		      		#elseif($!{env} == 3)	
+		      			https://t2.kaistart.net/gateway/api?apiName=$!{gatewayApi.name}&client=android&clientversion=1.0.0.1&xxx=xx&mock=1
+		      		#elseif($!{env} == 4)	
+		      			https://gw.kaishiba.com/gateway/api?apiName=$!{gatewayApi.name}&client=android&clientversion=1.0.0.1&xxx=xx&mock=1
+		      		#elseif($!{env} == 5)	
+		      			
+		      		#end
+		      	#end
+				</td>
+    		</tr>
+    	</table>
+    
+    
+    </div>
+</div>
+ <script id="selectTmpl" type="text/template">
+<% _.forEach(list, function(row,index) { %>
+ <option value=<%= row.id%> <% if(row.id ==$!{gatewayApi.groupId} ) { %>selected <% }%>><%= row.name%>   </option>
+<% }) %>
+</script>
+
+<!--这个参数用来确定参数的从属 -->
+<form class="form-inline clearfix" role="search" name="search">
+<input type="hidden" name="apiId" id="apiId" value=$!{gatewayApi.id}>
+</form>
+
+
+<form class="form-inline clearfix" role="request" name="request">
+<div class="panel panel-default" >
+    <table class="table table-bordered table-striped" id="requests">
+	  <thead>
+	  	<tr><th colspan="7" align="left">参数列表</th></tr>
+	    <tr>
+	      <th>顺序<a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="0~无穷大"><span class="glyphicon glyphicon-question-sign"></span></a></th>
+	      <th>名称<a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="定义接口时的方法形参"><span class="glyphicon glyphicon-question-sign"></span></a></th>
+	      <!-- <th>参数类型<a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="1:String;<br>2:int;<br>3:long;<br>4:bool;<br>5:float;<br>6:double;<br>7:自定义类型"><span class="glyphicon glyphicon-question-sign"></span></a></th>
+	      <th>细分类型<a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="在定义接口时,严格区分基本类型和封装类型"><span class="glyphicon glyphicon-question-sign"></span></a></th>
+	      -->
+	      <th>类型<a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="
+					<div style='text-align:left;'>基本类型：int,long,bool,float,double</div>
+					<div style='text-align:left;'>封装类型：java.lang.String;java.lang.Integer;<br>java.lang.Long;java.lang.Boolean;<br>java.lang.Float;java.lang.Double;</div>
+					<div style='text-align:left;'>自定义类型：com.xx.xxx.xxxdomain</div>
+					"><span class="glyphicon glyphicon-question-sign"></span></a></th>
+	      <th>是否必传</th>
+	      <th>参数示例<a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="
+					<div style='text-align:left;'>String:这是一个参数示例</div>
+					<div style='text-align:left;'>int:1024</div>
+					<div style='text-align:left;'>long:1024l</div>
+					<div style='text-align:left;'>bool:false</div>
+					<div style='text-align:left;'>float:1024f</div>
+					<div style='text-align:left;'>double:1024d</div>
+					<div style='text-align:left;'>自定义:entity对象</div>
+					"><span class="glyphicon glyphicon-question-sign"></span></a></th>
+	      <th>参数说明<a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="对参数的解释"><span class="glyphicon glyphicon-question-sign"></span></a></th>
+	      <th>创建时间</th>  
+	    </tr>
+	  </thead>
+	  <tbody role="apilist">
+	  </tbody>
+	</table>
+</div>
+<script id="apilistTmpl" type="text/template">
+<% _.forEach(list, function(row,index) { %>
+  <tr>
+      <td width="80px"><%= row.index %></td>
+      <td width="80px"><%= row.name%></td>
+      <!-- <td width="80px"><%= row.type%></td> -->
+      <!-- <td width="80px"><%= row.typeName.indexOf(".")<1&&(row.type>1&&row.type<7)?"基本类型":"封装类型"  %></td> -->
+      <td width="80px"><%= row.typeName%></td>
+      <td width="80px"><%= row.isRequired==1?"必须":"无需"%></td>
+      <td width="400"><%= row.example %></td>
+      <td><%= row.description %></td>
+      <td width="100px"><%= row.cdt %></td>
+  </tr>
+<% }) %>
+</script>
+
+</form>
+
+
+<form class="form-horizontal" role="example" name="example" >
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            API请求示例
+        </h3>
+    </div>
+    <div class="panel-body">    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">
+        <a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="调用接口后返回的结果，确保是可正常解析的json串,为mock功能提供数据"><span class="glyphicon glyphicon-question-sign"></span></a>
+        结果示例</label>
+        <div class="col-sm-6">
+            <textarea class="form-control"  rows="20" id="example" name="example">$!{gatewayApiResult.example}</textarea>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">
+        <a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="对响应结果的解释"><span class="glyphicon glyphicon-question-sign"></span></a>
+        响应参数</label>
+        <div class="col-sm-6">
+            <textarea class="form-control" rows="20" id="resultDesc" name="resultDesc">$!{gatewayApiResult.resultDesc}</textarea>
+        </div>
+    </div>
+    
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">
+        <a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="返回code及对应解释<br>1.网关错误码，<br>2.和服务错误码"><span class="glyphicon glyphicon-question-sign"></span></a>
+        响应码</label>
+        <div class="col-sm-6">
+            <textarea class="form-control" rows="20"  id="codeDesc" name="codeDesc">
+****服务错误码信息****       
+$!{gatewayApiResult.codeDesc}
+
+
+------分割线-------------------------------            
+****网关错误码信息****
+500，系统异常，请稍后再试
+原因：1. 请求IP在禁止名单中
+           2. dubbo泛化调用具体服务发生异常，具体要开发查看对应服务日志信息
+501，系统异常，没有找到服务
+原因：1. 没有在zookeeper中找到对应的服务。(可能对应系统停止，服务未暴露/注册等)
+50001，登录已失效，请重新登录
+原因：1.接口需要登录认证，但是没有传userId
+           2.接口需要登录认证，但是token信息不存在/失效/为null
+50002，签名不正确
+原因：1.接口需要验签，但是没有传sign值
+           2.服务端生成的sign值和client生成的sign值不相等!
+50003，参数格式错误
+原因：1.没有传必要参数apiName
+           2.传了apiName，但是没有找到匹配的信息
+           3.没有传必要参数appKey
+           4.传了appKey，但是没有找到匹配的信息
+           5.接口需要验签，但是没有传sign值
+           6.接口为post请求，但是body参数为null
+           7.接口为post请求，但是body内容过大导致解析超时或其他异常
+           8.接口为post请求，但是body内容不是标准的json格式
+           9.接口参数定义为必传，但是没有传该参数
+           10.接口参数定义为int，long类型，但是检测到传入的参数值不是数字类型
+           11.接口参数定义为float,double类型，但是无对传入的参数值进行类型转换
+50004，无权限访问该接口
+原因：1.请求的接口没有授权
+50005，http请求方式不正确
+原因：1.接口定义为GET请求，但是调用方使用POST请求
+           2.接口定义为POST请求，但是调用方使用GET请求
+            </textarea>
+        </div>
+    </div>
+    
+    <div class="form-group"  style="display:none;">
+        <label class="col-sm-2 col-sm-offset-1 control-label">创建时间</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="cdt" placeholder="" value="$!{gatewayApiResult.cdt}" maxlength="20" disabled>
+        </div>
+    </div>
+</div>
+</div>   
+</form>
+
+
+<!--这个信息,调用者不需要关注,隐藏掉 -->
+<form class="form-horizontal">
+<div class="panel panel-default" style="display:none;" >
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            API调用dubbo信息
+        </h3>
+    </div>
+    <div class="panel-body">
+    
+        
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label"><a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="包名路径+接口名称,如:<br>com.dubbo.service.Communication"><span class="glyphicon glyphicon-question-sign"></span></a>接口全路径</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="serviceName" placeholder="请输入接口的全路径" value="$!{gatewayApi.serviceName}" maxlength="100">
+        </div>
+    </div>
+    
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label"><a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="接口方法的名称"><span class="glyphicon glyphicon-question-sign"></span></a>方法名称</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="serviceMethod" placeholder="请输入方法的名称" value="$!{gatewayApi.serviceMethod}" maxlength="20">
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label"><a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="做版本控制需要"><span class="glyphicon glyphicon-question-sign"></span></a>服务版本号</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="serviceVersion" placeholder="请输入服务版本号" value="$!{gatewayApi.serviceVersion}" maxlength="20">
+        </div>
+    </div>
+
+	<div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">超时时间</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="timeOut" placeholder="请输入超时时间" value="$!{gatewayApi.timeOut}" maxlength="20">
+        </div>
+    </div>
+
+</div>
+
+</form>

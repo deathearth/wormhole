@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<!-- ====================================================== -->
+	<!-- POM 版本 -->
+	<!-- ====================================================== -->
+	<modelVersion>4.0.0</modelVersion>
+
+	<!-- ====================================================== -->
+	<!-- POM 类型 -->
+	<!-- ====================================================== -->
+	<packaging>pom</packaging>
+
+
+	<!-- ====================================================== -->
+	<!-- POM GAV -->
+	<!-- ====================================================== -->
+	<groupId>com.kaistart</groupId>
+	<artifactId>wormhole</artifactId>
+
+	<!-- ====================================================== -->
+	<!-- 项目名和组织 -->
+	<!-- ====================================================== -->
+	<url>http://www.kaistart.com</url>
+	<version>1.0.0-SNAPSHOT</version>
+	<name>wormhole</name>
+	<description>======== api网关 ========</description>
+
+	<!-- ====================================================== -->
+	<!-- 开发者介绍 -->
+	<!-- ====================================================== -->
+	<developers>
+		<developer>
+			<name>陈海龙</name>
+			<email>353479460@qq.com</email>
+		</developer>
+	</developers>
+
+	<!-- ====================================================== -->
+	<!-- 组件依赖管理 -->
+	<!-- ====================================================== -->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.kaistart</groupId>
+				<artifactId>wormhole-domain</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.kaistart</groupId>
+				<artifactId>wormhole-api</artifactId>
+				<version>1.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.kaistart</groupId>
+				<artifactId>wormhole-web</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+        </dependency>
+	
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.19</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.7</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+	</dependencies>
+
+	<!-- 插件配置 -->
+	<build>
+		<pluginManagement>
+			<plugins>
+				<!-- compiler插件, 设定JDK版本 -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>2.3.2</version>
+					<configuration>
+						<source>1.8</source>
+						<target>1.8</target>
+						<showWarnings>true</showWarnings>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<modules>
+		<module>wormhole-web</module>
+		<module>wormhole-api</module>
+		<module>wormhole-domain</module>
+	</modules>
+</project>

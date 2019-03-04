@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<appender name="logFile" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="file" value="${user.home}/logs/gateway_web.log" />
+		<param name="append" value="true" />
+		<param name="encoding" value="UTF-8" />
+		<param name="threshold" value="info" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p %c{2} %m%n" />
+		</layout>
+	</appender>
+	
+	<logger name="org.springframework.beans">
+		<level value="ERROR" />
+	</logger>
+	<logger name="org.springframework.web.servlet.mvc.method.annotation">
+		<level value="ERROR" />
+	</logger>
+	<logger name="org.springframework.context.annotation">
+		<level value="ERROR" />
+	</logger>
+	<logger name="org.apache.zookeeper">
+		<level value="ERROR" />
+	</logger>
+	<logger name="org.I0Itec.zkclient">
+		<level value="ERROR" />
+	</logger>
+	<logger name="org.apache.commons.httpclient">
+		<level value="ERROR" />
+	</logger>
+	
+	<!-- <logger name="com.alibaba.druid">
+		<level value="ERROR" />
+	</logger> -->
+	<logger name="com.alibaba.dubbo">
+		<level value="ERROR" />
+	</logger>
+	<logger name="sdk.biz.err">
+		<level value="OFF" />
+	</logger>
+	<logger name="sdk.comm.err">
+		<level value="OFF" />
+	</logger>
+	<!-- off alipay log end -->
+		
+	<root>
+		<level value="DEBUG" />
+		<appender-ref ref="logFile" />
+	</root>
+</log4j:configuration>

@@ -1,0 +1,98 @@
+#set($layout = "/layout/layout.vm")
+#set($pageTitle = "新增标签")
+#set($pageScript = "pages/gateway/mark/add")
+
+<form class="form-inline clearfix" role="search">
+<input type="hidden" name="status" value=1>
+</form>
+<form class="form-horizontal">
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            新增标签
+        </h3>
+    </div>
+    <div class="panel-body">
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">
+        <a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="<div style='width:190px;text-align:left;'>
+        如果不选择,创建一级标签<br>
+        如果选择,创建二级标签
+        </div>"><span class="glyphicon glyphicon-question-sign"></span></a>
+        一级标签</label>
+        <div class="col-sm-6">
+            <select id="rootId" class="form-control"  name="rootId" role="rootId" style="width:220px;height:33px;">
+            	
+            </select>
+        </div>
+    </div>
+ 
+ <script id="selectOneTmpl" type="text/template">
+ <option value="0">全部</option>
+<% _.forEach(list, function(row,index) { %>
+ <option value=<%= row.id%>><%= row.name%></option>
+<% }) %>
+</script>
+
+	<div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">
+        <a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="<div style='width:190px;text-align:left;'>
+        如果不选择,创建二级标签<br>
+        如果选择,创建三级标签
+        </div>"><span class="glyphicon glyphicon-question-sign"></span></a>
+        二级标签</label>
+        <div class="col-sm-6">
+            <select id="branchId" class="form-control" name="branchId" role="branchId" style="width:220px;height:33px;">
+            	<option value="0" selected>全部</option>
+            </select>
+        </div>
+    </div>
+	
+	<div class="form-group" style="display:none;">
+        <label class="col-sm-2 col-sm-offset-1 control-label">三级标签</label>
+        <div class="col-sm-6">
+            <select id="leafId" class="form-control" name="leafId" role="leafId" style="width:220px;height:33px;">
+            	<option value="0" selected>全部</option>
+            </select>
+        </div>
+    </div>
+ 
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">
+        标签名称</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" id="name" name="name" placeholder="请输入标签名称" value="" maxlength="20">
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">标签描述</label>
+        <div class="col-sm-6">
+            <textarea  class="form-control" id="desc" name="desc" placeholder="请输入标签描述信息" rows="8"></textarea>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">标签状态</label>
+        <div class="col-sm-6">
+        <label class="radio-inline">
+        <input type="radio" name="status" id="status1" value="0" disabled> 删除
+    	</label>
+    	<label class="radio-inline">
+        <input type="radio" name="status" id="status2" value="1" checked> 正常
+    	</label>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <div class="col-sm-6 col-sm-offset-3">
+            <button type="button" class="btn btn-default" role="cancel">取消</button>
+            <button type="submit" class="btn btn-primary">提交</button>
+        </div>
+    </div>
+</form>
+</div>
+</div>

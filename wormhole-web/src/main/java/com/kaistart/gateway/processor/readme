@@ -1,0 +1,22 @@
+目前组件总共分为 
+
+1.httpMethodProcessor           -- http请求方式验证
+2.contextProcessor              -- 上下文信息存储
+3.ipProcessor                   -- IP 黑白名单设置(待完善)
+4.userAgentProcessor            -- 浏览器用户代理过滤设置
+5.paramProcessor                -- 参数检查验证
+5.1.CallbackParamProcessor      -- 回调类型接口参数检查验证
+6.loginProcessor                -- token信息检查
+7.flowControlProcessor          -- 流控处理(待完成)
+8.signProcessor                 -- 签名验证
+9.authProcessor                 -- 权限验证
+10.mockProcessor                -- mock逻辑处理
+11.dubboProcessor               -- 最终服务调用处理
+
+普通请求
+针对于  http://localhost/gateway/api? 类型的地址按照顺序调用以下组件
+1，2，3，4，5，6，7，8，9，10，11
+
+回调请求【回调请求,不参与签名、权限验证等过滤逻辑。   mock功能正常使用方便测试】
+针对于  http://localhost/gateway/callback/？ 类型的地址按照顺序调用以下组件
+1，5.1，10，11

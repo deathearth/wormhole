@@ -1,0 +1,66 @@
+#set($layout = "/layout/layout.vm")
+#set($pageTitle = "关联标签")
+#set($pageScript = "pages/gateway/mark/listForCheck")
+
+
+<form class="form-inline clearfix" role="search">
+<input type="hidden" name="apiId" id="apiId" value=$!{apiId}>
+<div class="form-group">
+<label class="control-label" style="width:50px;text-align:right;">一级:</label>
+<select id="rootId" class="form-control" name="rootId" role="rootId" style="width:140px;height:33px;">
+	<option value="" selected>全部</option>
+	 #foreach($r in $root)
+       <option value=$!r.id >$!r.name</option>
+     #end  
+</select>
+
+    
+<label class="control-label" style="width:50px;text-align:right;">二级:</label>
+<select id="branchId" name="branchId" class="form-control" role="branchId" style="width:140px;height:33px;">
+<option value="" selected>全部</option>
+</select>
+ 
+<label class="control-label" style="width:50px;text-align:right;">三级:</label>
+<select id="leafId" name="leafId" class="form-control" role="leafId" style="width:140px;height:33px;">
+<option value="" selected>全部</option>
+</select>
+    
+  </div>
+</form>
+<hr>
+<form class="form-inline clearfix" name="save">
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>选择</th>
+      <th>序号</th>
+      <th>层级</th>
+      <th>标签名称</th>
+      <th>标签描述</th>
+      <th>创建时间</th>
+    </tr>
+  </thead>
+  <tbody role="list">
+  </tbody>
+</table>
+<button type="submit" class="btn btn-primary">提交</button>
+</form>
+<div class="clearfix">
+  <nav class="page-box pull-right"></nav>
+</div>
+
+<script id="listTmpl" type="text/template">
+<% _.forEach(list, function(row,index) { %>
+  <tr>
+  	  <td>
+  	  <input type="checkbox" name="checks" value="<%= row.id%>"  <%= row.isCheck>0?"checked":""%>>
+  	  <input type="hidden" name="ids" value="<%= row.id%>">
+  	  </td>
+      <td><%= index +　1  + offset %></td>
+      <td><%= row.level==1?"一级":row.level==2?"二级":"三级"%></td>
+      <td><%= row.name%></td>
+      <td><%= row.desc%></td>
+      <td><%= row.cdt%></td>
+  </tr>
+<% }) %>
+</script>

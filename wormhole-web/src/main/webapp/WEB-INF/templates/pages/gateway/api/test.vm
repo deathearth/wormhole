@@ -1,0 +1,231 @@
+﻿#set($layout = "/layout/layout.vm")
+#set($pageTitle = "API接口测试")
+#set($pageScript = "pages/gateway/api/test")
+
+
+<style>
+pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+.string { color: green; }
+.number { color: darkorange; }
+.boolean { color: blue; }
+.null { color: magenta; }
+.key { color: red; }
+</style>
+
+<form class="form-inline clearfix" role="search" name="search">
+    <input type="hidden" name="status" value=1>
+</form>
+
+<form class="form-horizontal" name="base">
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            API请求地址及基本参数&nbsp;&nbsp;(描述：$!{desc})  &nbsp;&nbsp;<span style='color:red;'>$!{interfaceDesc}</span>
+        </h3>
+    </div>
+    <div class="panel-body">
+	    <div class="form-group" style="margin:5px;float:left;">
+	        <div class="form-inline">
+	        	<input type="hidden" name="id" id="id" value=$!{apiId}>
+	            请求类型：<select id="type" name="type" class="form-control" role="requestType" style="width:80px;height:33px;" readOnly>
+	            	<option value='get'  #if($type == 1) selected #end> GET </option>
+	            	<option value='post' #if($type == 2) selected #end> POST </option>
+	            </select>
+	            <input type="hidden" name="t_env" value=$!{env}>
+	            请求环境：<select id="env" name="env" class="form-control" role="requestType" style="width:200px;height:33px;" >
+	            
+	            #if($!{env} == 1)
+	      			<option value='https://test.com/'>https://test.com/</option>
+	            	<option value='https://develop.com/'>https://develop.com/</option>
+	            	<option value='-1'>自定义地址</option>
+	      		#elseif($!{env} == 2)	
+	      			<option value='https://develop.com/'>https://develop.com/</option>
+	      		#elseif($!{env} == 3)	
+	      			<option value='https://test.com/'>https://test.com/</option>
+	      		#elseif($!{env} == 4)	
+	      			<option value='https://online.com/' selected>https://online.com/</option>
+	      		#elseif($!{env} == 5)	
+	      			
+	      		#end
+	      		
+	            </select>
+	            <span id="zdy" name="zdy"></span>
+	            
+	            <div style="float:right;right:200px;"><a href="#" style="float:right" class="tooltip-test" data-html="true" data-toggle="tooltip" title="选中后正常处理验签、登录逻辑,<br>
+	            最终不调用dubbo服务,直接返回结果示例">
+				<span class="glyphicon glyphicon-question-sign"></span></a><input type="checkbox" name="mock" value="1" checked >：Mock</div>
+				
+				<!--这里做隐藏处理,兼容历史数据 -->
+				<div style="float:right;display:none;"><a href="#" style="float:right" class="tooltip-test" data-html="true" data-toggle="tooltip" title="选中后地址变为callback路径,走回调流程,<br>没有签名验证、鉴权、登录等验证!">
+				<span class="glyphicon glyphicon-question-sign"></span></a><input type="checkbox" id="callback" name="callback" value="1" role="callback" >：Callback</div>
+	            <br><br>
+	            请求地址：
+	            <textarea class="form-control" name="url" id="url" rows="2" style="width:800px;">$!{url}</textarea>
+	        	<button type="submit" class="btn btn-primary">发送</button>
+	        	
+	        </div>
+	    </div>
+	</div>
+</div>    
+
+<!-- get方式|special为普通|需要鉴权|需要登录  -->
+<div class="panel panel-default" #if($type == 1 && $special == 0 && $islogin == 0 && $isauth == 0 ) style='display:none;' #end>
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            请求参数 
+        </h3>
+    </div>
+    <div class="panel-body">
+    	<div class="form-group" style="margin:5px;float:left;" >
+    		<table class="table table-striped " style="width:300px;" rules=cols>
+				<thead>
+					<tr>
+						<th #if($special != 0 && $islogin == 0 && $isauth == 0 ) style='display:none;' #end>
+							header参数
+						</th>
+						<th #if($type ==1 ) style='display:none;' #end>
+							body参数
+						</th>
+					</tr>
+				    <tr>
+    					<td #if($special != 0 && $islogin == 0 && $isauth == 0 ) style='display:none;' #end>
+					        <table class="table table-striped" style="width:380px;" id="requests">
+							   <thead>
+							     <tr>
+							       <th>√</th><th><B>KEY</B></th><th><B>VALUE</B></th>
+				    			 </tr>
+				    			 <tr>
+				    			 	<td style="width:120px;"><input type="hidden" name="enables" value="1"  >
+				    			 	<a href="#" style="float:left" class="tooltip-test" data-html="true" data-toggle="tooltip" 
+				    			 			title="<div style='width:190px;text-align:left;'>
+				    			 			application/json<br>
+				    			 			主体是序列化后的 JSON 字符串<br>
+				    			 			application/x-www-form-urlencoded<br>
+				    			 			数据按照 key1=val1&key2=val2 的方式进行编码，key 和 val 都进行了 URL 转码<br>
+				    			 			multipart/form-data<br>
+				    			 			表单上传文件<br>
+				    			 			text/xml<br>
+				    			 			使用 HTTP 作为传输协议，XML 作为编码方式的远程调用规范<br>
+				    			 			</div>">
+				    			 			<span class="glyphicon glyphicon-question-sign"></span></a>
+				    			 	
+				    			 	</td>
+				    			 	<td><input type="text" class="form-control" name="header_key1" id="header_key1"  readOnly value="content-type" maxlength="20" style="width:200px;height:33px;"></td>
+				    			 	<td style="float:inhert;" valign="middle">
+				    			 		<select class="form-control" name="header_value1" id="header_value1" >
+				    			 			<option value="application/json">application/json</option>
+				    			 			<option value="application/x-www-form-urlencoded">application/x-www-form-urlencoded</option>
+				    			 			<option value="multipart/form-data">multipart/form-data</option>
+				    			 			<option value="text/xml">text/xml</option>
+				    			 		</select>
+				    			 	</td>
+				    			 </tr>
+				    			 <tr>
+				    			 	<td style="width:120px;"><input type="checkbox" name="enables" checked value="2" readOnly>
+				    			 	<a href="#" style="float:left" class="tooltip-test" data-html="true" data-toggle="tooltip" 
+				    			 			title="<div style='width:190px;text-align:left;'>
+				    			 			请输入授权给用户的appKey，一般32位<br>
+				    			 			</div>">
+				    			 			<span class="glyphicon glyphicon-question-sign"></span></a>
+				    			 	</td>
+				    			 	<td><input type="text" class="form-control" name="header_key2" id="header_key2" readOnly value="appKey" maxlength="20" style="width:200px;height:33px;"></td>
+				    			 	<td>
+<select name="header_value2" id="header_value2" class="form-control" name="partnerId" role="select" ></select>
+<script id="selectTmpl" type="text/template">
+<% _.forEach(list, function(row,index) { %>
+ <option value=<%= row.appKey %> > >>> <%= row.name%></option>
+<% }) %>
+</script>
+				    			 	</td>
+				    			 </tr>
+				    			 <tr>
+				    			 	<td style="width:120px;"><input type="checkbox" name="enables" checked value="3" readOnly>
+				    			 	<a href="#" style="float:left" class="tooltip-test" data-html="true" data-toggle="tooltip" 
+				    			 			title="<div style='width:190px;text-align:left;'>
+				    			 			根据URL参数以及header参数等必要参数进行MD5加密，用来和服务器端接收到的数据进行比较验证，提高安全性。token不参与。<br>
+				    			 			</div>">
+				    			 			<span class="glyphicon glyphicon-question-sign"></span></a>
+				    			 	</td>
+				    			 	<td><input type="text" class="form-control" name="header_key3" id="header_key3" readOnly value="sign" maxlength="20" style="width:200px;height:33px;"></td>
+				    			 	<td><input type="text" class="form-control" name="header_value3" id="header_value3" readOnly placeholder="自动生成sign" value="" maxlength="50" style="width:200px;height:33px;"></td>
+				    			 </tr>
+				    			 <tr>
+				    			 	<td style="width:120px;"><input type="checkbox" name="enables" checked value="7" readOnly>
+				    			 	<a href="#" style="float:left" class="tooltip-test" data-html="true" data-toggle="tooltip" 
+				    			 			title="<div style='width:190px;text-align:left;'>
+				    			 			MD5(sign+token),用于验证用户登录失效问题<br>
+				    			 			</div>">
+				    			 			<span class="glyphicon glyphicon-question-sign"></span></a>
+				    			 	</td>
+				    			 	<td><input type="text" class="form-control" name="header_key7" id="header_key7" readOnly value="auth" maxlength="20" style="width:200px;height:33px;"></td>
+				    			 	<td><input type="text" class="form-control" name="header_value7" id="header_value7" readOnly placeholder="自动生成auth" value="" maxlength="50" style="width:200px;height:33px;"></td>
+				    			 </tr>
+				    			 <tr>
+				    			 	<td style="width:120px;"><input type="checkbox" name="enables" checked value="4" readOnly>
+				    			 	<a href="#" style="float:left" class="tooltip-test" data-html="true" data-toggle="tooltip" 
+				    			 			title="<div style='width:190px;text-align:left;'>
+				    			 			如果接口需要登录，则必须输入用户唯一ID进行验证<br>
+				    			 			</div>">
+				    			 			<span class="glyphicon glyphicon-question-sign"></span></a>
+				    			 	</td>
+				    			 	<td><input type="text" class="form-control" name="header_key4" id="header_key4" readOnly value="userId" maxlength="20" style="width:200px;height:33px;"></td>
+				    			 	<td><input type="text" class="form-control" name="header_value4" id="header_value4" placeholder="请输入用户唯一ID" value="$!{userId}" maxlength="50" style="width:200px;height:33px;"></td>
+				    			 </tr>
+				    			 <tr>
+				    			 	<td style="width:120px;"><input type="checkbox" name="enables" checked value="5" readOnly>
+				    			 	<a href="#" style="float:left" class="tooltip-test" data-html="true" data-toggle="tooltip" 
+				    			 			title="<div style='width:190px;text-align:left;'>
+				    			 			访问时的时间戳，用来检验接口访问的时效性、安全性，这里自动生成。<br>
+				    			 			</div>">
+				    			 			<span class="glyphicon glyphicon-question-sign"></span></a>
+				    			 	</td>
+				    			 	<td><input type="text" class="form-control" name="header_key5" id="header_key5" readOnly value="t" maxlength="20" style="width:200px;height:33px;"></td>
+				    			 	<td><input type="text" class="form-control" name="header_value5" id="header_value5"  placeholder="" value="$!{t}" maxlength="50" style="width:200px;height:33px;"></td>
+				    			 </tr>
+				    			 <tr>
+				    			 	<td style="width:120px;"><input type="checkbox" name="enables" checked value="6" readOnly>
+				    			 	<a href="#" style="float:left" class="tooltip-test" data-html="true" data-toggle="tooltip" 
+				    			 			title="<div style='width:190px;text-align:left;'>
+				    			 			设备ID,包含设备的信息<br>
+				    			 			</div>">
+				    			 			<span class="glyphicon glyphicon-question-sign"></span></a>
+				    			 	</td>
+				    			 	<td><input type="text" class="form-control" name="header_key6" id="header_key6" readOnly value="deviceId" maxlength="20" style="width:200px;height:33px;"></td>
+				    			 	<td><input type="text" class="form-control" name="header_value6" id="header_value6"  placeholder="" value="20180608" maxlength="50" style="width:200px;height:33px;"></td>
+				    			 </tr>
+				  			   </thead>
+				  			</table>
+				  			<table class="table table-striped" style="width:380px;">
+				  				<thead>
+				  					<tr><td align="right" role="add_header">+添加header参数</td></tr>
+				  				</thead>
+				  			</table>
+				  		</td>
+				  		<td #if($type ==1 ) style='display:none;' #end>
+				  			body对象（流/实体/字符串）<br><br>
+				  			<textarea class="form-control" rows="16" style="width:450px;" wrap="hard" id="body" name="body" #if($type ==1 ) disabled #end>$!{body}</textarea>
+				  		</td>
+  					</tr>
+  				</thead>
+  			</table>
+	    </div>
+	</div>
+</div>  
+
+</form>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            响应结果 Response
+        </h3>
+    </div>
+    <div class="panel-body">
+    	<a name="jump"></a><!--锚点 -->
+    	<div class="form-group" style="margin:5px;">
+    		<code id="response" name="response" style="width:950px;height:400px;overflow:auto;" >$!{response}</code>
+	        <!-- <div class="form-control" rows="15" style="width:950px;height:400px;overflow:auto;" id="response" name="response"  contenteditable="true">$!{response}</div> -->
+	    </div>
+	</div>
+</div>  
+

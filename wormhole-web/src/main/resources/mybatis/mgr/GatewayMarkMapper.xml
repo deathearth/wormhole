@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kaistart.gateway.mgr.mapper.GatewayMarkMapper">
+  <resultMap id="BaseResultMap" type="com.kaistart.gateway.domain.GatewayMarkDO">
+    <id column="ID" property="id" />
+    <result column="`LEVEL`" property="level" />
+    <result column="ROOT_ID" property="rootId" />
+    <result column="BRANCH_ID" property="branchId" />
+    <result column="LEAF_ID" property="leafId" />
+    <result column="`NAME`" property="name" />
+    <result column="`DESC`" property="desc" />
+    <result column="`STATUS`" property="status" />
+    <result column="CREATE_BY" property="createBy" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="`CDT`" property="cdt" />
+    <result column="`UDT`" property="udt" />
+    <result column="`VERSION`" property="version" />
+
+  </resultMap>
+  
+  <!-- 基本列 -->
+  <sql id="Base_Column_List">
+    `ID`,`LEVEL`,ROOT_ID,BRANCH_ID,LEAF_ID,`NAME`,`DESC`,`STATUS`,CREATE_BY,UPDATE_BY,`CDT`,`UDT`,`VERSION`
+  </sql>
+  
+  <sql id="where">
+	<where>
+	<if test="id != null">and `ID` = #{id}</if>
+        <if test="level != null">and `LEVEL` = #{level}</if>
+        <if test="rootId != null">and ROOT_ID = #{rootId}</if>
+        <if test="branchId != null">and BRANCH_ID = #{branchId}</if>
+        <if test="leafId != null">and LEAF_ID = #{leafId}</if>
+        <if test="name != null">and `NAME` = #{name}</if>
+        <if test="desc != null">and `DESC` = #{desc}</if>
+        <if test="status != null">and `STATUS` = #{status}</if>
+        <if test="createBy != null">and CREATE_BY = #{createBy}</if>
+        <if test="updateBy != null">and UPDATE_BY = #{updateBy}</if>
+        <if test="cdt != null">and `CDT` = #{cdt}</if>
+        <if test="udt != null">and `UDT` = #{udt}</if>
+        <if test="version != null">and `VERSION` = #{version}</if>
+        
+	</where>
+  </sql>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM gateway_mark 
+    WHERE id = #{id}
+  </select>
+  
+  <!-- 单个插入 -->
+  <insert id="insert" parameterType="com.kaistart.gateway.domain.GatewayMarkDO" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO gateway_mark (`LEVEL`,ROOT_ID,BRANCH_ID,LEAF_ID,`NAME`,`DESC`,`STATUS`,CREATE_BY,UPDATE_BY,`CDT`,`UDT`,`VERSION`)  VALUES (#{level},#{rootId},#{branchId},#{leafId},#{name},#{desc},#{status},#{createBy},#{updateBy},now(),now(),#{version})
+  </insert>
+  
+  <!-- 批量新增 -->
+  <insert id="batchInsert" parameterType="java.util.List">
+    INSERT INTO gateway_mark
+    (`LEVEL`,ROOT_ID,BRANCH_ID,LEAF_ID,`NAME`,`DESC`,`STATUS`,CREATE_BY,UPDATE_BY,`CDT`,`UDT`,`VERSION`)
+    VALUES
+    <foreach collection="list" item="item" index="index" separator=",">
+       (#{item.level},#{item.rootId},#{item.branchId},#{item.leafId},#{item.name},#{item.desc},#{item.status},#{item.createBy},#{item.updateBy},now(),now(),#{item.version})
+    </foreach>
+  </insert>
+  
+  <!-- 单个更新 -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.kaistart.gateway.domain.GatewayMarkDO">
+    UPDATE gateway_mark
+    <set>
+           <if test="level != null">
+        `LEVEL`=#{level},
+      </if>
+      <if test="rootId != null">
+        ROOT_ID=#{rootId},
+      </if>
+      <if test="branchId != null">
+        BRANCH_ID=#{branchId},
+      </if>
+      <if test="leafId != null">
+        LEAF_ID=#{leafId},
+      </if>
+      <if test="name != null">
+        `NAME`=#{name},
+      </if>
+      <if test="desc != null">
+        `DESC`=#{desc},
+      </if>
+      <if test="status != null">
+        `STATUS`=#{status},
+      </if>
+      <if test="createBy != null">
+        CREATE_BY=#{createBy},
+      </if>
+      <if test="updateBy != null">
+        UPDATE_BY=#{updateBy},
+      </if>
+      <if test="udt != null">
+        `UDT`=#{udt},
+      </if>
+
+    </set>
+    where ID = #{id}
+  </update>
+  
+  <!-- 单个更新 有版本号-->
+  <update id="updateByVersion" parameterType="com.kaistart.gateway.domain.GatewayMarkDO">
+    UPDATE gateway_mark
+    <set>
+           <if test="level != null">
+        `LEVEL`=#{level},
+      </if>
+      <if test="rootId != null">
+        ROOT_ID=#{rootId},
+      </if>
+      <if test="branchId != null">
+        BRANCH_ID=#{branchId},
+      </if>
+      <if test="leafId != null">
+        LEAF_ID=#{leafId},
+      </if>
+      <if test="name != null">
+        `NAME`=#{name},
+      </if>
+      <if test="desc != null">
+        `DESC`=#{desc},
+      </if>
+      <if test="status != null">
+        `STATUS`=#{status},
+      </if>
+      <if test="createBy != null">
+        CREATE_BY=#{createBy},
+      </if>
+      <if test="updateBy != null">
+        UPDATE_BY=#{updateBy},
+      </if>
+	  <if test="udt != null">
+        `UDT`=#{udt},
+      </if>
+     
+     version = version+1,
+    </set>
+    
+    WHERE id = #{id}  and version =#{version}
+  </update>
+  
+  <!-- 删除(逻辑删除) -->
+  <update id="delete" parameterType="com.kaistart.gateway.domain.GatewayMarkDO" >
+    UPDATE gateway_mark SET udt = now(), is_delete = 1 WHERE id = #{id}
+  </update>
+
+  <!-- 删除（真删除） -->
+  <delete id="deleteDB" parameterType="com.kaistart.gateway.domain.GatewayMarkDO" >
+    delete from gateway_mark where id = #{id}
+  </delete>
+  
+  <!-- 查询所有 -->
+  <select id="selectList" resultMap="BaseResultMap" parameterType="Map">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM gateway_mark
+    <include refid="where"/>
+    order by id desc
+  </select>
+  
+  <!--查询总数-->
+  <select id="selectCount" parameterType="Map" resultType="Integer">
+     SELECT count(*) FROM gateway_mark  
+     <include refid="where"/>
+  </select>
+  
+  <!-- 分页查询 -->
+  <select id="selectPage" resultMap="BaseResultMap" parameterType="Map">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM gateway_mark 
+    <include refid="where"/>
+    ORDER BY id DESC 
+    <if test="size != null or skip != null"> LIMIT #{skip}, #{size} </if>
+  </select>
+  
+  <!-- 单个查询 -->
+  <select id="selectById" parameterType="com.kaistart.gateway.domain.GatewayMarkDO" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM gateway_mark 
+    WHERE id = #{id}
+  </select>
+  
+  
+  
+  
+  
+  
+  <resultMap id="CheckMap" type="com.kaistart.gateway.domain.GatewayMarkDO">
+    <id column="ID" property="id" />
+    <result column="`LEVEL`" property="level" />
+    <result column="`NAME`" property="name" />
+    <result column="`DESC`" property="desc" />
+    <result column="`CDT`" property="cdt" />
+    <result column="`ISCHECK`" property="isCheck" />
+
+  </resultMap>
+  <!-- 分页选择查询 -->
+  <select id="selectCheckPage" resultMap="CheckMap" parameterType="Map">
+    SELECT
+    a.`id`,a.`name`,a.`desc`,a.`level`,a.`CDT`,
+    IFNULL(b.mark_id,0) as ischeck  
+    from (select `id`,`name`,`desc`,`level`,cdt from gateway_mark 
+    where `status` = 1 
+    <if test="rootId != null">and ROOT_ID = #{rootId}</if>
+    <if test="branchId != null">and BRANCH_ID = #{branchId}</if>
+    <if test="leafId != null">and LEAF_ID = #{leafId}</if>
+    ) a left join (select mark_id from gateway_api_mark where api_id = #{apiId}) b
+	on a.id = b.mark_id ORDER BY a.id DESC 
+    <if test="size != null or skip != null"> LIMIT #{skip}, #{size} </if>
+  </select>
+  <select id="selectCheckCount" resultType="java.lang.Integer" parameterType="Map">
+    SELECT
+    count(*) 
+    from (select id from gateway_mark 
+    where `status` = 1 
+    <if test="rootId != null">and ROOT_ID = #{rootId}</if>
+    <if test="branchId != null">and BRANCH_ID = #{branchId}</if>
+    <if test="leafId != null">and LEAF_ID = #{leafId}</if>
+    ) a left join (select mark_id from gateway_api_mark where api_id = #{apiId}) b
+	on a.id = b.mark_id
+  </select>
+</mapper>

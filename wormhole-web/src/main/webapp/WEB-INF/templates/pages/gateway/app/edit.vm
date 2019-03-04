@@ -1,0 +1,147 @@
+﻿#set($layout = "/layout/layout.vm")
+#set($pageTitle = "编辑APP应用信息")
+#set($pageScript = "pages/gateway/app/edit")
+
+<form class="form-inline clearfix" role="search">
+<input type="hidden" name="status" value=1>
+</form>
+<form class="form-horizontal">
+
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            修改APP信息
+        </h3>
+    </div>
+    <div class="panel-body">
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">
+        <a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="<div style='width:190px;text-align:left;'>名称保证唯一<br>格式:终端_APP名</div>"><span class="glyphicon glyphicon-question-sign"></span></a>
+        APP名称</label>
+        <div class="col-sm-6">
+        	<input type="hidden" class="form-control" name="id" placeholder="" value="$!{gatewayApp.id}">
+            <input type="text" class="form-control" name="name" id="name" placeholder="请输入APP名称" value="$!{gatewayApp.name}" maxlength="20" readonly="readonly">
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">APP描述</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="description" id="description" placeholder="请输入APP描述信息" value="$!{gatewayApp.description}" maxlength="200">
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">用户ID</label>
+        <div class="col-sm-6">
+            <!-- 
+            <input type="text"  name="partnerId" 
+            placeholder="请输入用户ID" value="" maxlength="200" readonly="readonly">
+            -->
+            <select id="partnerId" class="form-control" name="partnerId" id="partnerId" role="select" style="width:220px;height:33px;"></select>
+        </div>
+    </div>
+
+ <script id="selectTmpl" type="text/template">
+<% _.forEach(list, function(row,index) { %>
+ <option value=<%= row.id%>  <% if(row.id ==$!{gatewayApp.partnerId} ) { %>selected <% }%> ><%= row.name%></option>
+<% }) %>
+</script>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">app_key</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="appKey" id="appKey" placeholder="请输入app_key信息" value="$!{gatewayApp.appKey}" maxlength="200" readonly="readonly">
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">app_secret</label>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" name="appSecret" id="appSecret" placeholder="请输入app_secret信息" value="$!{gatewayApp.appSecret}" maxlength="200" readonly="readonly">
+        </div>
+        <div class="col-sm-1" style="display:none;">
+        	<button type="button" class="btn btn-default" role="create">重新生成[暂失效]</button>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">
+        <a href="#" class="tooltip-test" data-html="true" data-toggle="tooltip" title="<div style='width:190px;text-align:left;'>默认是分级授权,先验证组是否授权,如果否则验证单个接口是否授权</div>"><span class="glyphicon glyphicon-question-sign"></span></a>
+        授权类型</label>
+        <div class="col-sm-6">
+            <!-- <input type="text" class="form-control" name="auth_type" placeholder="" value="">  -->
+            
+        <label class="radio-inline">
+        <input type="radio" name="authType" id="auth_type1" value="0" #if($gatewayApp.authType == 0) checked  #end  disabled> 全部授权
+    	</label>
+    	<label class="radio-inline">
+        <input type="radio" name="authType" id="auth_type2" value="1" #if($gatewayApp.authType == 1) checked  #end> 分级授权
+    	</label>
+        </div>
+    </div>
+    
+    <!-- 
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">APP状态</label>
+        <div class="col-sm-6">
+        <label class="radio-inline">
+        <input type="radio" name="status" id="status1" value="0" checked> 删除 
+    	</label>
+    	<label class="radio-inline">
+        <input type="radio" name="status" id="status2" value="1" > 正常
+    	</label>
+        </div>
+    </div>
+    
+    -->
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">创建者</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="createBy" placeholder="" value="$!{gatewayApp.createBy}" maxlength="20" disabled>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">修改者</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="updateBy" placeholder="" value="$!{gatewayApp.updateBy}" maxlength="20" readonly="readonly">
+        </div>
+    </div>
+    
+    <!-- 
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">创建时间</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="cdt_error" placeholder="" value="$!{gatewayApp.cdt}" maxlength="20" readonly="readonly">
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">修改时间</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="udt" placeholder="" value="$!{gatewayApp.udt}" maxlength="20" readonly="readonly">
+        </div>
+    </div>
+    
+	<div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">版本号</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="version" placeholder="请输入版本号" value="$!{gatewayApp.version}" maxlength="20">
+        </div>
+    </div>
+    -->
+    
+     <div class="form-group">
+        <div class="col-sm-6 col-sm-offset-3">
+            <button type="button" class="btn btn-default" role="cancel">取消</button>
+            <button type="submit" class="btn btn-primary">提交</button>
+        </div>
+    </div>
+</form>
+
+</div>
+</div>

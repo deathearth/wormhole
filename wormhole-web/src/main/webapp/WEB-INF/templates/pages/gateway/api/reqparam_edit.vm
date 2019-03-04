@@ -1,0 +1,129 @@
+#set($layout = "/layout/layout.vm")
+#set($pageTitle = "API请求参数修改")
+#set($pageScript = "pages/gateway/api/reqparam_edit")
+
+
+<form class="form-horizontal">
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">api_id</label>
+        <div class="col-sm-6">
+        	<input type='hidden' name='id' value='$!{gatewayServiceRequest.id}'>
+            <input type="text" class="form-control" name="apiId" placeholder="" value="$!{gatewayServiceRequest.apiId}" maxlength="20" readonly="readonly">
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">参数顺序</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="index" placeholder="请输入参数顺序" value="$!{gatewayServiceRequest.index}" maxlength="20"  readOnly >
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">参数名称</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="name" placeholder="请输入参数名称" value="$!{gatewayServiceRequest.name}" maxlength="200"  #if($special!=0) readOnly #end>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">参数类型</label>
+        <div class="col-sm-6">
+	        <select  class="form-control" id="type" name="type" role="select" style="width:220px;height:33px;"  #if($special!=0) disabled #end>
+	        	<option value='1' #if($gatewayServiceRequest.type == 1) selected  #end>String</option>
+	        	<option value='2' #if($gatewayServiceRequest.type == 2 && $gatewayServiceRequest.typeName =='int') selected  #end>int</option>
+	        	<option value='2' #if($gatewayServiceRequest.type == 2 && $gatewayServiceRequest.typeName =='java.lang.Integer') selected  #end>java.lang.Integer</option>
+	        	<option value='3' #if($gatewayServiceRequest.type == 3 && $gatewayServiceRequest.typeName =='long') selected  #end>long</option>
+	        	<option value='3' #if($gatewayServiceRequest.type == 3 && $gatewayServiceRequest.typeName =='java.lang.Long') selected  #end>java.lang.Long</option>
+	        	<!-- 先禁用
+	        	<option value='4' #if($gatewayServiceRequest.type == 4 && $gatewayServiceRequest.typeName =='boolean') selected  #end>boolean</option>
+	        	<option value='4' #if($gatewayServiceRequest.type == 4 && $gatewayServiceRequest.typeName =='java.lang.Boolean') selected  #end>java.lang.Boolean</option>
+	        	-->
+	        	<option value='5' #if($gatewayServiceRequest.type == 5 && $gatewayServiceRequest.typeName =='float') selected  #end>float</option>
+	        	<option value='5' #if($gatewayServiceRequest.type == 5 && $gatewayServiceRequest.typeName =='java.lang.Float') selected  #end>java.lang.Float</option>
+	        	<option value='6' #if($gatewayServiceRequest.type == 6 && $gatewayServiceRequest.typeName =='double') selected  #end>double</option>
+	        	<option value='6' #if($gatewayServiceRequest.type == 6 && $gatewayServiceRequest.typeName =='java.lang.Double') selected  #end>java.lang.Double</option>
+	        	<option value='7' #if($gatewayServiceRequest.type == 7) selected  #end>自定义类型</option>
+	        </select>
+        </div>
+    </div>
+    
+    <!--
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">细分类型</label>
+        <div class="col-sm-6">
+        	<select class="form-control" id="detailtype" name="detailtype" role="detailtype" style="width:220px;height:33px;"  #if($special!=0) disabled #end>
+	        	<option value='1' #if($gatewayServiceRequest.type>1&&$gatewayServiceRequest.type<7&&$gatewayServiceRequest.typeName.indexOf(".")<=0) selected  #end>基本类型</option>
+	        	<option value='2' #if($gatewayServiceRequest.type==1||$gatewayServiceRequest.type==7) selected  #end>封装类型</option>
+	        </select>
+        </div>
+    </div>
+    -->
+    
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">参数类全名称</label>
+        <div class="col-sm-6" id="follow">
+            <input type="text" class="form-control" name="typeName" placeholder="请输入全名称" value="$!{gatewayServiceRequest.typeName}" maxlength="128"
+            #if($gatewayServiceRequest.type<7) readOnly  #end   #if($special!=0) readOnly #end>
+        </div>
+    </div>
+    
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">是否必传</label>
+        <div class="col-sm-6">
+        <label class="radio-inline">
+        	<input type="radio" name="isRequired" id="is_required1" value="1" #if($gatewayServiceRequest.isRequired == 1) checked  #end    #if($special!=0) disabled #end> 是
+    	</label>
+    	<label class="radio-inline">
+        	<input type="radio" name="isRequired" id="is_required2" value="0" #if($gatewayServiceRequest.isRequired == 0) checked  #end    #if($special!=0) disabled #end> 否
+    	</label>
+        </div>
+    </div>
+    
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">参数示例</label>
+        <div class="col-sm-6">
+            <textarea class="form-control"  rows="20" id="example" name="example">$!{gatewayServiceRequest.example}</textarea>
+        </div>
+    </div>
+    
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">参数说明</label>
+        <div class="col-sm-6">
+            <textarea class="form-control"  rows="20" id="description" name="description">$!{gatewayServiceRequest.description}</textarea>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">创建时间</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="cdt" placeholder="" value="$!{gatewayServiceRequest.cdt}" maxlength="20" disabled>
+        </div>
+    </div>
+    <!-- 
+    <div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">修改时间</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="udt" placeholder="" value="$!{gatewayServiceRequest.udt}" maxlength="20">
+        </div>
+    </div>
+
+	<div class="form-group">
+        <label class="col-sm-2 col-sm-offset-1 control-label">版本号</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="version" placeholder="请输入版本号" value="$!{gatewayServiceRequest.version}" maxlength="20">
+        </div>
+    </div>
+    -->
+    
+    <div class="form-group">
+        <div class="col-sm-6 col-sm-offset-3">
+            <button type="button" class="btn btn-default" role="cancel">取消</button>
+            <button type="submit" class="btn btn-primary">提交</button>
+        </div>
+    </div>
+</form>

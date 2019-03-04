@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kaistart.auth.mapper.RoleMapper">
+
+    <resultMap id="result" type="com.kaistart.auth.domain.Role">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="cdt" property="cdt"/>
+        <result column="udt" property="udt"/>
+    </resultMap>
+
+    <sql id="where">
+        <where>
+            <if test="id != null">id = #{id}</if>
+            <if test="name != null">and name like concat('%', #{name}, '%')</if>
+            <if test="cdt != null">
+                <![CDATA[
+                  and cdt between date_format(#{cdt}, '%Y-%m-%d 00:00:00') and date_format(#{cdt}, '%Y-%m-%d 23:59:59')
+                ]]>
+            </if>
+            <if test="udt != null">
+                <![CDATA[
+                  and udt between date_format(#{udt}, '%Y-%m-%d 00:00:00') and date_format(#{udt}, '%Y-%m-%d 23:59:59')
+                ]]>
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectById" parameterType="Integer" resultMap="result">
+        SELECT * FROM auth_role WHERE id = #{id}
+    </select>
+
+    <select id="selectCount" parameterType="Map" resultType="Integer">
+        SELECT count(*) FROM auth_role
+        <include refid="where"/>
+    </select>
+
+    <select id="selectList" parameterType="Map" resultMap="result">
+        SELECT * FROM auth_role
+
+        <include refid="where"/>
+
+        ORDER BY id DESC
+
+        <if test="size != null or skip != null">
+            LIMIT #{skip}, #{size}
+        </if>
+    </select>
+
+    <update id="update" parameterType="com.kaistart.auth.domain.Role">
+        UPDATE auth_role
+
+        <set>
+            <if test="id != null">
+                id = #{id},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            udt = now()
+        </set>
+
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        DELETE FROM auth_role WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteList" parameterType="List">
+        DELETE FROM auth_role
+        <where>
+            <if test="ids != null">
+                id in
+                <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </delete>
+
+    <insert id="insert" parameterType="com.kaistart.auth.domain.Role">
+        INSERT INTO auth_role (name, cdt, udt) VALUES (#{name}, now(), now())
+    </insert>
+
+</mapper>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kaistart.gateway.mgr.mapper.GatewayApiMarkMapper">
+  <resultMap id="BaseResultMap" type="com.kaistart.gateway.domain.GatewayApiMarkDO">
+    <result column="MARK_ID" property="markId" />
+    <result column="API_ID" property="apiId" />
+
+  </resultMap>
+  
+  <!-- 基本列 -->
+  <sql id="Base_Column_List">
+    MARK_ID,API_ID
+  </sql>
+  
+  <sql id="where">
+	<where>
+	<if test="markId != null">and MARK_ID = #{markId}</if>
+        <if test="apiId != null">and API_ID = #{apiId}</if>
+        
+	</where>
+  </sql>
+  
+    <!-- 查询所有 -->
+  <select id="selectList" resultMap="BaseResultMap" parameterType="Map">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM gateway_api_mark 
+    <include refid="where"/>
+    order by id desc 
+  </select>
+  
+  <!-- 单个插入 -->
+  <insert id="insert" parameterType="com.kaistart.gateway.domain.GatewayApiMarkDO" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO gateway_api_mark (MARK_ID,API_ID)  VALUES (#{markId},#{apiId})
+  </insert>
+  
+  <!-- 批量新增 -->
+  <insert id="batchInsert" parameterType="java.util.List">
+    INSERT INTO gateway_api_mark
+    (MARK_ID,API_ID)
+    VALUES
+    <foreach collection="list" item="item" index="index" separator=",">
+       (#{item.markId},#{item.apiId})
+    </foreach>
+  </insert>
+  
+  
+  <!-- 删除（真删除） -->
+  <delete id="deleteDB" parameterType="com.kaistart.gateway.domain.GatewayApiMarkDO" >
+    delete from gateway_api_mark where MARK_ID = #{markId} and API_ID = #{apiId}
+  </delete>
+  
+  <!--查询总数-->
+  <select id="selectCount" parameterType="Map" resultType="Integer">
+     SELECT count(*) FROM gateway_api_mark  
+     <include refid="where"/>
+  </select>
+  
+  
+  
+  <resultMap id="BaseResultMapMarks" type="com.kaistart.gateway.domain.GatewayMarkDO">
+    <id column="ID" property="id" />
+    <result column="`LEVEL`" property="level" />
+    <result column="ROOT_ID" property="rootId" />
+    <result column="BRANCH_ID" property="branchId" />
+    <result column="LEAF_ID" property="leafId" />
+    <result column="`NAME`" property="name" />
+    <result column="`DESC`" property="desc" />
+    <result column="`STATUS`" property="status" />
+    <result column="CREATE_BY" property="createBy" />
+    <result column="UPDATE_BY" property="updateBy" />
+    <result column="`CDT`" property="cdt" />
+    <result column="`UDT`" property="udt" />
+    <result column="`VERSION`" property="version" />
+  </resultMap>
+  <sql id="Base_Column_List_Marks">
+    `ID`,`LEVEL`,ROOT_ID,BRANCH_ID,LEAF_ID,`NAME`,`DESC`,`STATUS`,CREATE_BY,UPDATE_BY,`CDT`,`UDT`,`VERSION`
+  </sql>
+  <!-- 查询所有 -->
+  <select id="selectMarks" resultMap="BaseResultMapMarks" parameterType="java.lang.Long">
+    SELECT
+    <include refid="Base_Column_List_Marks" />
+    FROM gateway_mark where id in (
+    	select mark_id from gateway_api_mark where API_ID = #{apiId}
+    )
+  </select>
+  
+</mapper>

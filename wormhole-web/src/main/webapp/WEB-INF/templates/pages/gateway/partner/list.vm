@@ -1,0 +1,58 @@
+#set($layout = "/layout/layout.vm")
+#set($pageTitle = "用户管理列表")
+#set($pageScript = "pages/gateway/partner/list")
+
+
+<form class="form-inline clearfix" role="search">
+
+  <div class="form-group">
+    <label class="control-label">用户搜索</label>
+    <input type="text" class="form-control" style="width:150px;" name="name" placeholder="请输入用户名称" value = "" maxlength="15">
+    <input type="hidden" name="status" value="1">
+  </div>
+
+  <div class="form-group pull-right">
+    <button class="btn btn-success" type="submit">查询</button>
+    <button class="btn btn-default" type="button" role="add">新增用户</button>
+  </div>
+
+</form>
+<hr>
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>序号</th>
+      <th>用户名称</th>
+      <th>PARTNER_KEY</th>
+      <th>PARTNER描述</th>
+      <th>创建者</th>
+      <th>修改者</th>
+      <th>创建时间</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody role="list">
+  	  
+  </tbody>
+</table>
+<div class="clearfix">
+  <nav class="page-box pull-right"></nav>
+</div>
+
+<script id="listTmpl" type="text/template">
+<% _.forEach(list, function(row,index) { %>
+  <tr>
+      <td><%= index +　1  + offset %></td>
+      <td><a href="javascript:" data-id="<%= row.id %>" role="detail"><%= row.name%></a></td>
+      <td width="300px"><%= row.partnerKey%></td>
+      <td title="<%= row.description%>"><%= row.description.length>20?row.description.substring(0,20)+"...":row.description   %></td>
+	  <td><%= row.createBy==null?'--':row.createBy %></td>
+	  <td><%= row.updateBy==null?'--':row.updateBy %></td>
+	  <td width="150px"><%= row.cdt %></td>
+      <td>
+          <a href="javascript:" data-id="<%= row.id %>" role="delete">删除</a>
+          <a href="javascript:" data-id="<%= row.id %>" role="edit">编辑</a>
+      </td>
+  </tr>
+<% }) %>
+</script>

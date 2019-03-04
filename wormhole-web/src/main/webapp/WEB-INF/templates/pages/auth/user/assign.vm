@@ -1,0 +1,29 @@
+﻿#set($layout = "/layout/layout.vm")
+#set($pageTitle = "分配角色")
+#set($pageScript = "pages/auth/user/assign")
+
+<form class="form-inline clearfix" role="search">
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th></th>
+            <th>角色名称</th>
+        </tr>
+        </thead>
+        <tbody role="list">
+        </tbody>
+    </table>
+    <div class="form-group pull-right">
+        <button class="btn btn-danger" type="button" role="cancel">取消</button>
+        <button class="btn btn-success" type="submit">提交</button>
+    </div>
+</form>
+
+<script id="listTmpl" type="text/template">
+    <% _.forEach(list, function(row,index) { %>
+    <tr>
+        <td><input name="ids" type="checkbox" id="ids_<%= row.id%>" value="<%= row.id%>" /></td>
+        <td><%= row.name%></td>
+    </tr>
+    <% }) %>
+</script>
