@@ -2,12 +2,17 @@
 
 ## 相关快速链接
 
-* <a>管理台操作说明</a> 
-* <a>C端对接网关及签名说明</a>
-* <a>回调接口使用说明</a>
-* <a>多环境配置使用说明</a>
-* <a>网关错误码说明</a>
-* <a>WormHole更新说明</a>
+- [管理台操作说明](http://gitlab.kaistart.net/chenhailong/wormhole/wikis/管理台操作说明)
+
+- [C端对接网关及签名说明](http://gitlab.kaistart.net/chenhailong/wormhole/wikis/c端对接网关及签名说明)
+
+- [回调接口使用说明](http://gitlab.kaistart.net/chenhailong/wormhole/wikis/回调接口使用说明)
+
+- [多环境配置使用说明](http://gitlab.kaistart.net/chenhailong/wormhole/wikis/多环境配置使用说明)
+
+- [网关错误码说明](http://gitlab.kaistart.net/chenhailong/wormhole/wikis/网关错误码说明)
+
+- [WormHole更新说明](http://gitlab.kaistart.net/chenhailong/wormhole/wikis/wormhole更新说明)
 
 ### 目录
 * <a herf="1">平台背景</a>
