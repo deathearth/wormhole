@@ -36,12 +36,12 @@
 ## <a name="2">平台介绍</a>
 
 &nbsp;&nbsp;&nbsp;&nbsp;WormHole是“虫洞”意思。物理界解释为连接黑洞和白洞的时空隧道。它的结构和计算机网络中的网关类似，作为连接两个世界的枢纽。各管各，不用关心中间做了什么。如下：
-<div align="center"><img src="/uploads/ccc16e7f388a630781a6795a8b6babb6/3a0d45edef972b9024170c99f8e9721e.gif" width = "300" /></div>
+<div align="center"><img src="/img/1.gif" width = "300" /></div>
 
 
 &nbsp;&nbsp;&nbsp;&nbsp;WormHole是一个简单、易用的api管理平台。目的是为了降低后端服务开发与前端调用的耦合性。通过WormHole这一层使整个项目的开发协作更加完善。客户端开发人员从管理平台查找需要的接口信息进行调用，服务端开发人员定义好接口后同步到管理平台中，管理平台可以统一对接口的访问设置等。
 
-<div align="left"><img src="/uploads/c6029fa4db1946344fabbad4f57ec1ea/1.jpg" width = "800" /></div>
+<div align="left"><img src="/img/1.jpg" width = "800" /></div>
 
 
 ## <a name="3">平台特性</a>
@@ -60,7 +60,7 @@
 
 ## <a name="4">平台技术结构</a>
 
-<div align="left"><img src="/uploads/af9f7e45f4eb6935300667795e832b0e/2.png" width = "800" /></div>
+<div align="left"><img src="/img/2.png" width = "800" /></div>
 
 > 注：server层是指具体的dubbo服务提供方，框架、插件根据实际需求处理
 
@@ -70,10 +70,10 @@
 
 ## <a name="5">平台组件逻辑</a>
 
-<div align="left"><img src="/uploads/a09c18714e4063561e6018b93070e778/3.png" width = "800" /></div>
+<div align="left"><img src="/img/3.png" width = "800" /></div>
 
 
-<div align="left"><img src="/uploads/9ff4369adb558f6575c00dd703e76692/4.png" width = "800" /></div>
+<div align="left"><img src="/img/4.png" width = "800" /></div>
 
 
 
