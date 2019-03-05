@@ -62,9 +62,9 @@
 
 <div align="left"><img src="/uploads/af9f7e45f4eb6935300667795e832b0e/2.png" width = "800" /></div>
 
-注：server层是指具体的dubbo服务提供方，框架、插件根据实际需求处理
+> 注：server层是指具体的dubbo服务提供方，框架、插件根据实际需求处理
 
-之后整合一个SpringBoot版本的WormHole。
+>> WormHole的SpringBoot版本是 将SpringMVC、Shiro、JSP、Velocity、Servlet等组件与SpringBoot进行整合。部分配置还有优化空间，可按需调整
 
 
 
