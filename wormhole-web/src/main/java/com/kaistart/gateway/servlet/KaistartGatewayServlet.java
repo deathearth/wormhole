@@ -45,6 +45,8 @@ public class KaistartGatewayServlet extends HttpServlet {
     //第一种方式，实现Autowired功能可用
 //    SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
     
+    System.out.println("----");
+    
     //第二种方式
     WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
     processorChain =(ProcessorChain)context.getBean("processorChain");
@@ -56,6 +58,7 @@ public class KaistartGatewayServlet extends HttpServlet {
     Object result = null;
     Context context = new Context();
     try {
+      System.out.println("+++");
       result = processorChain.run(request, context);
       response(response, result);
     } catch (GatewayException e) {

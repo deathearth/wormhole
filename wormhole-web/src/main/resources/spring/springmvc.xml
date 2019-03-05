@@ -9,8 +9,8 @@
                            ">
 
 	<!-- SpringMVC controller生效 -->
-    <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager"/>
-    <bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+     <!-- <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager"/> -->
+<!--    <bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
         <property name="mediaTypes">
             <value>
                 html=text/html
@@ -18,9 +18,9 @@
             </value>
         </property>
         <property name="defaultContentType" value="application/json"/>
-    </bean>
+    </bean> -->
 
-	<!-- velocity 配置 -->
+<!-- velocity 配置 -->
     <bean id="velocityConfigurer" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
         <property name="resourceLoaderPath" value="/WEB-INF/templates"/>
         <property name="configLocation" value="classpath:velocity/velocity.properties"/>
@@ -31,7 +31,8 @@
                 <prop key="foreach.hasNext">loopHasNext</prop>
             </props>
         </property>
-    </bean>
+    </bean> 
+
     <bean id="viewResolver"  class="org.springframework.web.servlet.view.velocity.VelocityLayoutViewResolver">
         <property name="order" value="-2"/>
         <property name="suffix" value=".vm"/>
@@ -44,22 +45,21 @@
         <property name="exposeSpringMacroHelpers" value="true"/>
         <property name="numberToolAttribute" value="numberTool"/>
         <property name="contentType" value="text/html;charset=UTF-8"/>
-    </bean>
+    </bean> 
 
     <!--拦截器-->
-    <mvc:interceptors>
+<!--     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
             <mvc:exclude-mapping path="/pages/**" />
             <bean class="com.kaistart.auth.interceptor.AuthInterceptor"/>
         </mvc:interceptor>
-    </mvc:interceptors>
+    </mvc:interceptors> -->
 
 
 	<!--退出登录时，返回jsp页面有用到这个配置-->
-	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+	 <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
         <property name="order" value="-1"/>
-        <property name="contentNegotiationManager" ref="contentNegotiationManager"/>
         <property name="viewResolvers">
             <list>
                 <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -75,5 +75,5 @@
                 <bean class="com.alibaba.fastjson.support.spring.FastJsonJsonView"/>
             </list>
         </property>
-    </bean> 
+    </bean>  
 </beans>

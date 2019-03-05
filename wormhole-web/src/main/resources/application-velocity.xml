@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/context 
+						http://www.springframework.org/schema/context/spring-context-3.0.xsd
+						">
+						
+	<context:component-scan base-package="org.springframework.web.servlet.view.velocity.*" />
+	<context:component-scan base-package="org.apache.velocity.tools.view.*" />				
+						
+	<!-- <bean id="mvcVelocityEngine"
+		class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+		<property name="resourceLoaderPath" value="WEB-INF/templates/" /> 
+		<property name="configLocation" value="classpath:/velocity.properties" />
+	</bean>
+
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
+		<property name="cache" value="false" />
+		<property name="prefix" value="/WEB-INF/templates/" />视图文件的前缀，即存放的路径
+		<property name="toolboxConfigLocation" value="toolbox.xml" />
+		<property name="suffix" value=".vm" />视图文件的后缀名
+		<property name="dateToolAttribute" value="date" />日期函数名称
+		<property name="numberToolAttribute" value="number" />数字函数名称
+		<property name="contentType" value="text/html;charset=UTF-8" />
+		<property name="exposeSpringMacroHelpers" value="true" />是否使用spring对宏定义的支持
+		<property name="exposeRequestAttributes" value="true" />是否开放request属性
+		<property name="requestContextAttribute" value="rc" />request属性引用名称
+	</bean> -->
+</beans>

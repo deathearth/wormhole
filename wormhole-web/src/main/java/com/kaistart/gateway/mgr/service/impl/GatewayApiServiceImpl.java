@@ -70,7 +70,6 @@ public class GatewayApiServiceImpl extends AbstractCommonServiceImpl<GatewayApiD
     @Resource
     private JdbcTemplate jdbcTemplate;
     @Resource
-    private JdbcTemplate jdbcTemplate2;
     
     @Autowired
     private ZkService  zkService;
