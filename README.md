@@ -14,8 +14,9 @@
 
 - [WormHole更新说明](https://github.com/deathearth/wormhole/wikis/wormhole更新说明)
 
-> GitHub地址：https://github.com/deathearth/wormhole
-> Gitee地址：https://gitee.com/deathearth/wormhole
+> 配置好即可运行
+>> GitHub地址：https://github.com/deathearth/wormhole  
+>> Gitee地址：https://gitee.com/deathearth/wormhole
 
 ### 目录
 * <a herf="1">平台背景</a>
