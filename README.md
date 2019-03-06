@@ -14,6 +14,9 @@
 
 - [WormHole更新说明](https://github.com/deathearth/wormhole/wikis/wormhole更新说明)
 
+> GitHub地址：https://github.com/deathearth/wormhole
+> Gitee地址：https://gitee.com/deathearth/wormhole
+
 ### 目录
 * <a herf="1">平台背景</a>
 * <a herf="2">平台介绍</a>
@@ -43,6 +46,8 @@
 
 <div align="left"><img src="/img/1.jpg" width = "800" /></div>
 
+
+>> WormHole有两个版本，一个是基于SpringMVC框架、一个是基于原版改造为SpringBoot版本的。
 
 ## <a name="3">平台特性</a>
 *  网关支持Dubbo服务
@@ -252,7 +257,8 @@ wormehole-web 【JAVA类、配置部分】
 
 	| — login.jsp               【登录页面】
 	
-	
+
+> SpringBoot版本的配置文件会少一点。  约定大于配置，应该还有较多优化空间。
 
 
 ## <a name="7">平台环境要求</a>
@@ -262,6 +268,7 @@ wormehole-web 【JAVA类、配置部分】
 4. Tomcat容器等
 5. Mysql数据库
 
+> SpringBoot版本不需要tomcat,
 
 ## <a name="8">平台运行说明</a>
 
@@ -277,6 +284,7 @@ wormehole-web 【JAVA类、配置部分】
 	* gateway-web的 Context root 为 “/”
 * 部署到tomcat容器进行启动, 记得将webcontext-root 改为 '/'
 
+> 运行的时候，DEBUG模式查看日志，比较容易处理问题。
 
 ## <a name="9">交流使用</a>
 
