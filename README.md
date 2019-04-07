@@ -289,5 +289,5 @@ wormehole-web 【JAVA类、配置部分】
 
 ## <a name="9">交流使用</a>
 
-### QQ:		353479460
+### WX:		deathearth / 15858249942
 ### EMAIL:	353479460@qq.com
