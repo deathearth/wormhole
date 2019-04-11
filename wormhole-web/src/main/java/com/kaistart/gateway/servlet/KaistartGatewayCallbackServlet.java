@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,11 +31,9 @@ import com.kaistart.gateway.processor.Context;
  * @author chenhailong
  * @date 2019年1月31日 下午2:36:14
  */
+@WebServlet(urlPatterns = "/callback",description = "回调接口servlet")
 public class KaistartGatewayCallbackServlet extends HttpServlet {
 
-  /**
-   * 
-   */
   private static final long serialVersionUID = 1L;
   private static final Logger logger = LoggerFactory.getLogger(KaistartGatewayCallbackServlet.class);
   private GatewayMgrService gatewayMgrService;  
@@ -93,8 +92,10 @@ public class KaistartGatewayCallbackServlet extends HttpServlet {
             response.setHeader(entry.getKey(), entry.getValue().toString());
           }
         }
+      }else {
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().write(result.toString());
       }
-      response.getWriter().write(result.toString());
     } catch (Exception e) {
       logger.info("response header error {}",e);
       try {
