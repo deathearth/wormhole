@@ -191,6 +191,8 @@ wormehole-web 【JAVA类、配置部分】
 			| — processor       【网关逻辑的核心组件】
 
 			| — servlet         【网关接口请求的servlet地址】
+			
+		| — init                【web.xml中部分配置移动到这里，20190622调整】
 
 	src/main/resources
 
@@ -291,3 +293,25 @@ wormehole-web 【JAVA类、配置部分】
 
 ### WX:		deathearth / 15858249942
 ### EMAIL:	353479460@qq.com
+
+
+
+
+
+
+****
+
+## 20190228  
+* WormHole 独立项目改造完成 
+
+## 20190304  
+* gitlab文档处理基本完成
+
+## 20190305  
+* WormHole项目 SpringBoot版本改造完成
+
+## 20190622
+* 使用servlet 3.0之后的异步特性，配合线程池，增加吞吐量
+* 部分web.xml配置，改为注解或类加载方式
+* 简单使用lamada表达式处理
+
