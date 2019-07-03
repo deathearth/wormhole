@@ -1,0 +1,49 @@
+#set($layout = "/layout/layout.vm")
+#set($pageTitle = "网关帮助说明")
+#set($pageScript = "pages/gateway/help/base")
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            操作指南
+        </h3>
+    </div>
+    <div class="panel-body">
+    
+    <div class="form-group">
+        <ul>
+        <li>项目github地址：<a href="https://github.com/deathearth/wormhole/import" target="_blank">https://github.com/deathearth/wormhole/import</a></li>
+        <li>项目gitee 地址：<a href="https://gitee.com/deathearth/wormhole" target="_blank">https://gitee.com/deathearth/wormhole</a></li>
+        <li>联系方式WX:	deathearth / 15858249942</li>
+        <li>个人博客地址:	<a href="https://www.deathearth.com" target="_blank">https://www.deathearth.com</a></li>
+        </ul>
+    </div>
+    
+    <div class="form-group">
+    <hr>
+    操作步骤:
+    <ol>
+        <li>配置好对应的数据库、zk地址等信息；</li>
+        <li>创建网关用户；</li>
+        <li>创建网关应用；</li>
+        <li>创建网关接口分组；</li>
+        <li>创建dubbo服务端接口，并暴露服务；</li>
+        <li>新增并录入dubbo服务接口的基本信息；</li>
+        <li>将接口或者接口分组授权给应用；</li>
+        <li>使用接口测试功能调试所需要用到的接口，验证基本功能；</li>
+        <li>如果接口需要登录，请在redis中创建以usertoken_【uid】为键的值，值对象为com/kaistart/gateway/domain/pojo/UserToken.java
+        <br>(注:每个系统中存储的token信息可能会不一样，根据需求可以调整UserToken信息)。
+         </li>
+        <li>如果接口测试通过,客户端可以对接接口;</li>
+        <li>最简单的是无鉴权、无登录类型接口；</li>
+        <li>如果需要验签可以先根据签名规则进行签名处理；</li>
+        <li>回调型接口有且只有一个参数，必须为java.util.Map类型，可以查看文档规则</li>
+        <li>个别业务按照需求可以扩展或调整</li>
+        <li>-- --</li>
+        <li>这里目前只支持dubbo泛化调用，不支持http协议。</li>
+    </ol>
+    </div>
+    
+	</div>
+</div>
