@@ -285,6 +285,10 @@ wormehole-web 【JAVA类、配置部分】
 	* /com/kaistart/gateway/config/MgrConfig.java 	
 	【修改不同环境的ip信息，这里这样写主要为了简化使用，可按需迁移到配置中心去】
 	* gateway-web的 Context root 为 “/”
+
+这里是用 eclipse进行运行,如果使用 idea无法直接运行，需要调整
+
+
 * 部署到tomcat容器进行启动, 记得将webcontext-root 改为 '/'
 	
 	* 正常流程如下，但不限于
